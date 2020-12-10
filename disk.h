@@ -12,7 +12,7 @@ int get_disk_size();
  * 
  * @return returns 0 on success, -1 otherwise. 
  * 
- * @note This function will open a file named "disk" as a vritual disk
+ * @note This function will open a file named "disk" as a virtual disk
  * If the file is not found, it will try to create the file, and fill it with zeros of 4 MiB.
  * This function must be called before any calls to disk_read_block() and disk_write_block().
  * This function will fail if the disk is already opened.
