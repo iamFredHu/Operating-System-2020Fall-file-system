@@ -25,13 +25,12 @@ int process_cmd(char *buf)
 {
     char path[50];
     char command[50];
-    int flag = 0;
     int i = 0;
 
     /*
     对获取到的buf进行分类，可分为path（路径）和command（命令）2类
-    对于一个指令，例如：cd a/b/c.txt
-    cd属于command，而a/b/c.txt属于path，只要检测到有空格，就可以认为空格之前的是command（命令）
+    对于一个指令，例如：cmd a/b/c.txt
+    cmd属于command，而a/b/c.txt属于path，只要检测到有空格，就可以认为空格之前的是command（命令）
     对于后面没有path（路径）的命令来说，检测到换行符号（\n）可认为指令结束
     */
     for (; i <= strlen(buf); i++)
@@ -81,14 +80,13 @@ int process_cmd(char *buf)
         printf("Error Command.\n");
         return 1;
     }
-    
 }
 
 int main(void)
 {
     static char buf[100]; //键盘缓冲区读入
 
-    //init_filesystem(); filesystem.c中对文件进行初始化的函数，目前还没有写
+    init_filesystem(); //filesystem.c中对文件进行初始化的函数，目前还没有写
     printf("Welcome to my file system!\n");
     while (get_cmd(buf, sizeof(buf)) >= 0) //如果能读到buf，则一直循环下去
     {

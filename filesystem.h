@@ -9,6 +9,8 @@
 
 #define MAX_INODE_NUM 1024
 #define BLOCK_SIZE 1024
+#define INODE_SIZE 32
+#define MAGIC_NUM 0xdec0de
 
 //超级块
 typedef struct super_block
@@ -39,7 +41,15 @@ typedef struct dir_item
     char name[121];    // 目录项表示的文件/目录的文件名/目录名
 } dir_item;
 
+sp_block *sb;
+inode inode_array[MAX_INODE_NUM];
 
+void init_super_block(sp_block *sb); //初始化超级块
+void read_super_block(sp_block *sb); //读取超级块
+void write_super_block(sp_block *sb); //写入超级块
+void info_super_block(sp_block *sb); //获取超级块信息
+
+void init_filesystem();     //文件系统初始化
 int ls(char *dir);         //进入文件夹
 int mkdir(char *dirName);  //创建文件夹
 int touch(char *fileName); //创建文件
