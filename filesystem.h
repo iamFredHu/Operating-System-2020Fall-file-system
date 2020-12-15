@@ -39,15 +39,9 @@ typedef struct dir_item
     char name[121];    // 目录项表示的文件/目录的文件名/目录名
 } dir_item;
 
-FILE *fp;
-sp_block *spBlock;
-inode inode_table[MAX_INODE_NUM];
-dir_item block_buffer[BLOCK_SIZE / sizeof(dir_item)];
 
-void screen_information(int num); //屏幕信息显示
-void filesystem_init();           //文件系统初始化
-void ls();                        //展示读取文件夹内容
-void mkdir();                     //创建文件夹
-void touch();                     //创建文件
-void cp();                        //复制文件
-void shutdown();                  //关闭系统
+int ls(char *dir);         //进入文件夹
+int mkdir(char *dirName);  //创建文件夹
+int touch(char *fileName); //创建文件
+int cp();                  //复制文件
+void shutdown();           //关闭系统
