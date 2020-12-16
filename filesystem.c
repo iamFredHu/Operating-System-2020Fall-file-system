@@ -19,20 +19,15 @@ void init_filesystem()
         printf("The disk has been successfully opened!\n"); //调试信息，等删除
     }
 
-    //read_super_block 读sb
+    //read_super_block
     //读magic_num，判断是否为ext2文件系统，若是则打开文件系统，若不是则进行相应的初始化操作
-    read_super_block(&sb);
-    if (sb.magic_num == MAGIC_NUM)
+    char *buf;
+    buf = read_block(0);
+    sb = (sp_block *)buf;
+    if (sb->magic_num == MAGIC_NUM)
     {
         //是ext2文件系统，所以可以打开文件系统，读取里面的内容
-        info_super_block(&sb);
-
-        //读inode
-        for (int i = 0; i < MAX_INODE_NUM; i++)
-        {
-            read_inode(&node[i], i + INODE_START); //这个地方还没想清楚 目前的想法是超级块占用前两个BLOCK(0、1) 而inode就从第三个BLOCK开始（编号为2）
-        }
-
+        info_super_block(sb);
         printf("The file system has been opened successfully...\n");
     }
     else
@@ -48,23 +43,8 @@ void init_filesystem()
                 //进行文件系统初始化
 
                 //超级块初始化
-                init_super_block(&sb);
-                write_super_block(&sb);
-                info_super_block(&sb);
-
-                //inode初始化
-                for (int i = 0; i < MAX_INODE_NUM; i++)
-                {
-                    node[i].size = 0;              //初始化时尺寸为0
-                    node[i].link = 1;              //在本系统中认为文件链接数为1
-                    node[i].file_type = TYPE_FILE; //初始化时认为类型为FILE
-                }
-
-                //写inode
-                for (int i = 0; i < MAX_INODE_NUM; i++)
-                {
-                    write_inode(&node[i], i + INODE_START);
-                }
+                init_super_block(sb);
+                info_super_block(sb);
 
                 printf("Formating finished,good luck and have fun!\n");
                 format_flag = 0;
@@ -119,53 +99,19 @@ void init_super_block(sp_block *sb)
     */
 }
 
-//读取超级块
-void read_super_block(sp_block *sb)
+//读数据块
+char *read_block(int block_number)
 {
-    char buf[1024];
-    char *pointer;
-    read_super_block_disk(buf);
-    pointer = (char *)sb;
-    for (int i = 0; i < sizeof(sb); i++)
-    {
-        *pointer = buf[i];
-        pointer++;
-    }
+    char *buf = (char *)malloc(1024);
+    memset(buf, 0, 1024);
+    disk_read_block(block_number * 2, buf);
+    disk_read_block(block_number * 2 + 1, buf + DEVICE_BLOCK_SIZE);
+    return buf;
 }
 
-//写入超级块
-void write_super_block(sp_block *sb)
+//写数据块
+void write_block(int block_number, char *buf, int size, int offset)
 {
-    char buf[1024];
-    char *pointer;
-    pointer = (char *)sb;
-    for (int i = 0; i < sizeof(sb); i++)
-    {
-        buf[i] = *pointer;
-        pointer++;
-    }
-    write_super_block_disk(buf);
-}
-
-/*
-一开始没有想清楚超级块与buf之间的关系，按照系统默认的buf[512]来进行的设定，但是后来发现这样的话空间不够，所以
-一个超级块必须对应两个buf[512]，即在超级块读写时，buf应该为[512*2]
-*/
-
-//在读取超级块时，从disk中读buf
-void read_super_block_disk(char *buf)
-{
-    disk_read_block(0, buf);
-    buf = buf + DEVICE_BLOCK_SIZE;
-    disk_read_block(1, buf);
-}
-
-//在写入超级块时，将buf写入disk中
-void write_super_block_disk(char *buf)
-{
-    disk_write_block(0, buf);
-    buf = buf + DEVICE_BLOCK_SIZE;
-    disk_write_block(1, buf);
 }
 
 //获取超级块信息
@@ -196,28 +142,43 @@ void info_super_block(sp_block *sb)
 }
 
 //读取inode
-void read_inode(inode *node, int block_number)
+inode *read_inode(int inode_number)
 {
-    char buf[DEVICE_BLOCK_SIZE];
-    disk_read_block(block_number, buf);
-    //一个buf（diskblock）是512，而一个inode是32，因此要每次读取16个inode
-    for (int i = 0; i < 16; i++)
-    {
-        node[i] = *(inode *)(buf + 32 * (i - 1));
-    }
+    int block_number = inode_number / 32 + 1; //找到inode对应的数据块 这里要注意的是第一个数据块已经被超级块占用了
+    int block_offset = inode_number % 32;     //块内偏移
+    char *read_inode_buf;
+    inode *read_inode_node;
+    read_inode_buf = read_block(block_number);
+    read_inode_node = (inode *)(read_inode_buf + block_offset * 32);
+    return read_inode_node;
 }
 
 //写入inode
-void write_inode(inode *node, int block_number)
+void write_inode(inode *write_inode_node, int inode_number)
 {
-    char buf[DEVICE_BLOCK_SIZE];
-    //写入inode是不是应该反过来呢，每次读取16个inode，一次写入buf中
-    for (int i = 0; i < 16; i++)
+    int block_number = inode_number / 32 + 1; //找到inode对应的数据块 这里要注意的是第一个数据块已经被超级块占用了
+    int block_offset = inode_number % 32;     //块内偏移
+    write_block(block_number, (char *)write_inode_node, 32, block_offset * 32);
+}
+
+//创建inode
+inode* create_inode(uint16_t file_type)
+{
+    inode* create_inode_node = (inode *)malloc(32); //为什么要用malloc 这个一开始遇到了什么问题 可以写在报告里面
+    create_inode_node->file_type = file_type;
+    create_inode_node->size = 0;
+    create_inode_node->link = 1;
+    for (int i = 0; i < 6; i++)
     {
-        *buf = *(char *)&node[i]; //这个地方指针+取值乱七八糟 回宿舍需要问一下
-        *buf += 32;
+        create_inode_node->block_point[i] = (uint32_t)0; 
     }
-    disk_write_block(block_number, buf);
+    return create_inode_node;
+}
+
+//创建目录项结构体
+dir_item* create_dir_item(uint8_t type, uint32_t node_id, char *name)
+{
+    
 }
 
 /* 寻找空闲块
@@ -233,7 +194,7 @@ int find_free_block()
         {
             // >>右移
             // & 按位与
-            if (((sb.block_map[i] >> j) & 1) == 0)
+            if (((sb->block_map[i] >> j) & 1) == 0)
             {
                 printf("New Free Block Found:%d\n", i * 32 + j);
                 return i * 32 + j;
@@ -252,7 +213,7 @@ int find_free_inode()
         {
             // >>右移
             // & 按位与
-            if (((sb.inode_map[i] >> j) & 1) == 0)
+            if (((sb->inode_map[i] >> j) & 1) == 0)
             {
                 printf("New Free iNode Found:%d\n", i * 32 + j);
                 return i * 32 + j;
