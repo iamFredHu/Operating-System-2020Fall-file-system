@@ -85,7 +85,9 @@ int main(void)
 {
     static char buf[100]; //键盘缓冲区读入
 
-    init_filesystem(); //filesystem.c中对文件进行初始化的函数，目前还没有写
+    init_filesystem(); //文件系统初始化
+    find_free_block();
+    find_free_inode();
     printf("Welcome to my file system!\n");
     while (get_cmd(buf, sizeof(buf)) >= 0) //如果能读到buf，则一直循环下去
     {

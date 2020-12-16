@@ -25,13 +25,12 @@ void init_filesystem()
     if (sb.magic_num == MAGIC_NUM)
     {
         //是ext2文件系统，所以可以打开文件系统，读取里面的内容
-        printf("The information of the file system is now loading,please wait for a moment...\n");
         info_super_block(&sb);
 
         //读inode
         for (int i = 0; i < MAX_INODE_NUM; i++)
         {
-            read_inode(&node[i], i + INODE_START);//这个地方还没想清楚 目前的想法是超级块占用前两个BLOCK_NUMBER (0、1) 而inode就从第三个block开始（编号为2）
+            read_inode(&node[i], i + INODE_START); //这个地方还没想清楚 目前的想法是超级块占用前两个BLOCK(0、1) 而inode就从第三个BLOCK开始（编号为2）
         }
 
         printf("The file system has been opened successfully...\n");
@@ -47,7 +46,6 @@ void init_filesystem()
             if (input_choice == 'y')
             {
                 //进行文件系统初始化
-                printf("The information of the file system is now loading,please wait for a moment...\n");
 
                 //超级块初始化
                 init_super_block(&sb);
@@ -88,26 +86,43 @@ void init_filesystem()
 void init_super_block(sp_block *sb)
 {
     sb->magic_num = MAGIC_NUM;
-    sb->free_block_count = 4096 - 1 - 32; //空闲数据块数 超级块占用1 inode数组占用32 在这里用的是指导书里面的数据 uint32 32位 block_map[128] 32*128
+    sb->free_block_count = 4096 - 1 - 32; //空闲数据块数
     sb->free_inode_count = 1024;          //空闲inode数 在这里我们的节点数是32*32
     sb->dir_inode_count = 0;
+
+    /*
+    * 有关数据块大小的计算
+    * 示例中一共可以表示128*32=4096个数据块 其中超级块和inode也需要占用数据块
+    * 每个数据块的大小为1KiB
+    * 超级块占用1个数据块 inode占用 32 * 1024(1024个inode，每个inode占用32B空间) / 1024 KiB  
+    */
 
     //数据块和inode位图初始化
     memset(sb->block_map, 0, sizeof(sb->block_map));
     memset(sb->inode_map, 0, sizeof(sb->inode_map));
 
-    sb->inode_map[0] = MAX_NUM;
-    sb->block_map[0] = ~(sb->block_map[0]);
-    sb->block_map[1] = (1 << 31) | (1 << 30);
+    //表明数据块已占用， 0-super bock 1-32 inode
+    for (int i = 0; i < 33; i++)
+    {
+        //对block_map按位操作
+        int index = i / 32;
+        int32_t offset = i % 32;
+        uint32_t block_map_process = 1 << offset;
+        sb->block_map[index] |= block_map_process;
+        sb->free_block_count = sb->free_block_count - 1;
+        disk_write_block(0, (char *)sb);
+        disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
+    }
+
     /*
-    对于inode位图和数据块位图初始化还有些没弄清楚，后面再改一下
+    * 对于inode位图和数据块位图初始化还有些没弄清楚，后面再改一下
     */
 }
 
 //读取超级块
 void read_super_block(sp_block *sb)
 {
-    char buf[DEVICE_BLOCK_SIZE * 2];
+    char buf[1024];
     char *pointer;
     read_super_block_disk(buf);
     pointer = (char *)sb;
@@ -121,7 +136,7 @@ void read_super_block(sp_block *sb)
 //写入超级块
 void write_super_block(sp_block *sb)
 {
-    char buf[DEVICE_BLOCK_SIZE * 2];
+    char buf[1024];
     char *pointer;
     pointer = (char *)sb;
     for (int i = 0; i < sizeof(sb); i++)
@@ -158,7 +173,7 @@ void info_super_block(sp_block *sb)
 {
     if (sb == NULL)
     {
-        fprintf(stderr, "Error:The Super Block is null.");
+        printf("Error:The Super Block is null.\n");
         return;
     }
 
@@ -199,10 +214,51 @@ void write_inode(inode *node, int block_number)
     //写入inode是不是应该反过来呢，每次读取16个inode，一次写入buf中
     for (int i = 0; i < 16; i++)
     {
-        *buf = (char *)&(node[i]);
+        *buf = *(char *)&node[i]; //这个地方指针+取值乱七八糟 回宿舍需要问一下
         *buf += 32;
     }
     disk_write_block(block_number, buf);
+}
+
+/* 寻找空闲块
+ * block_map[128]实际上记录的是128*32=4096个数据块的占用情况
+ * 
+*/
+int find_free_block()
+{
+    //block_map[128]
+    for (int i = 0; i < 128; i++)
+    {
+        for (int j = 0; j < 32; j++)
+        {
+            // >>右移
+            // & 按位与
+            if (((sb.block_map[i] >> j) & 1) == 0)
+            {
+                printf("New Free Block Found:%d\n", i * 32 + j);
+                return i * 32 + j;
+            }
+        }
+    }
+}
+
+//寻找空闲inode
+int find_free_inode()
+{
+    //inode_map[128]
+    for (int i = 0; i < 32; i++)
+    {
+        for (int j = 0; j < 32; j++)
+        {
+            // >>右移
+            // & 按位与
+            if (((sb.inode_map[i] >> j) & 1) == 0)
+            {
+                printf("New Free iNode Found:%d\n", i * 32 + j);
+                return i * 32 + j;
+            }
+        }
+    }
 }
 
 //进入文件夹
@@ -224,7 +280,7 @@ int touch(char *fileName)
 }
 
 //复制文件
-int cp()
+int cp(char *ori, char *dest)
 {
     //TODO
 }
