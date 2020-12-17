@@ -48,6 +48,9 @@ typedef struct dir_item
 sp_block *sb;
 inode node[MAX_INODE_NUM];
 
+inode *root_dir_node;
+dir_item *root_dir_dir_item;
+
 void init_super_block(sp_block *sb);  //初始化超级块
 void info_super_block(sp_block *sb);  //获取超级块信息
 
@@ -56,12 +59,14 @@ void write_block(int block_number,char *buf,int size,int offset); //写数据块
 
 inode* read_inode(int inode_number); //读取inode
 void write_inode(inode *write_inode_node, int inode_number); //写入inode
-inode* create_inode(uint16_t file_type); //创建inode
+inode* init_inode(uint16_t file_type); //初始化inode
 
 int find_free_block(); //寻找空闲块
 int find_free_inode(); //寻找空闲inode
 
-dir_item* create_dir_item(uint8_t type, uint32_t node_id, char *name); //创建目录项结构体
+dir_item* init_dir_item(uint8_t type, uint32_t inode_id, char *name); //创建目录项结构体
+void write_dir_item(dir_item* dir,inode* read_dir_item_node); //写目录
+dir_item* read_dir_item(inode* read_dir_item_node,int block_point_index,int offset_index); //读目录
 
 void init_filesystem();        //文件系统初始化
 

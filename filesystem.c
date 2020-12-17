@@ -21,13 +21,17 @@ void init_filesystem()
 
     //read_super_block
     //读magic_num，判断是否为ext2文件系统，若是则打开文件系统，若不是则进行相应的初始化操作
-    char *buf;
-    buf = read_block(0);
-    sb = (sp_block *)buf;
+    char *init_fs_buf;
+    init_fs_buf = read_block(0);
+    sb = (sp_block *)init_fs_buf;
     if (sb->magic_num == MAGIC_NUM)
     {
         //是ext2文件系统，所以可以打开文件系统，读取里面的内容
         info_super_block(sb);
+
+        root_dir_node = read_inode(0);
+        root_dir_dir_item = init_dir_item(TYPE_DIR, 0, "/");
+
         printf("The file system has been opened successfully...\n");
     }
     else
@@ -46,6 +50,9 @@ void init_filesystem()
                 init_super_block(sb);
                 info_super_block(sb);
 
+                root_dir_node = read_inode(0);
+                root_dir_dir_item = init_dir_item(TYPE_DIR, 0, "/");
+
                 printf("Formating finished,good luck and have fun!\n");
                 format_flag = 0;
             }
@@ -63,12 +70,12 @@ void init_filesystem()
 }
 
 //初始化超级块
-void init_super_block(sp_block *sb)
+void init_super_block(sp_block *init_super_block_sb)
 {
-    sb->magic_num = MAGIC_NUM;
-    sb->free_block_count = 4096 - 1 - 32; //空闲数据块数
-    sb->free_inode_count = 1024;          //空闲inode数 在这里我们的节点数是32*32
-    sb->dir_inode_count = 0;
+    init_super_block_sb->magic_num = MAGIC_NUM;
+    init_super_block_sb->free_block_count = 4096 - 1 - 32; //空闲数据块数
+    init_super_block_sb->free_inode_count = 1024;          //空闲inode数 在这里我们的节点数是32*32
+    init_super_block_sb->dir_inode_count = 0;
 
     /*
     * 有关数据块大小的计算
@@ -78,8 +85,8 @@ void init_super_block(sp_block *sb)
     */
 
     //数据块和inode位图初始化
-    memset(sb->block_map, 0, sizeof(sb->block_map));
-    memset(sb->inode_map, 0, sizeof(sb->inode_map));
+    memset(init_super_block_sb->block_map, 0, sizeof(init_super_block_sb->block_map));
+    memset(init_super_block_sb->inode_map, 0, sizeof(init_super_block_sb->inode_map));
 
     //表明数据块已占用， 0-super bock 1-32 inode
     for (int i = 0; i < 33; i++)
@@ -88,10 +95,10 @@ void init_super_block(sp_block *sb)
         int index = i / 32;
         int32_t offset = i % 32;
         uint32_t block_map_process = 1 << offset;
-        sb->block_map[index] |= block_map_process;
-        sb->free_block_count = sb->free_block_count - 1;
-        disk_write_block(0, (char *)sb);
-        disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
+        init_super_block_sb->block_map[index] |= block_map_process;
+        init_super_block_sb->free_block_count = init_super_block_sb->free_block_count - 1;
+        disk_write_block(0, (char *)init_super_block_sb);
+        disk_write_block(1, (char *)init_super_block_sb + DEVICE_BLOCK_SIZE);
     }
 
     /*
@@ -112,6 +119,20 @@ char *read_block(int block_number)
 //写数据块
 void write_block(int block_number, char *buf, int size, int offset)
 {
+    //分配数据块
+    int index = block_number / 32;
+    int32_t write_block_offset = block_number % 32;
+    uint32_t block_map_process = 1 << write_block_offset;
+    sb->block_map[index] |= block_map_process;
+    sb->free_block_count = sb->free_block_count - 1;
+    disk_write_block(0, (char *)sb);
+    disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
+
+    char *temp_buf = read_block(block_number);
+    //由buf所指内存区域复制size个字节到temp_buf+offset所指内存区域
+    memmove(temp_buf + offset, buf, size);
+    disk_write_block(block_number * 2, temp_buf);
+    disk_write_block(block_number * 2 + 1, temp_buf + DEVICE_BLOCK_SIZE);
 }
 
 //获取超级块信息
@@ -161,24 +182,70 @@ void write_inode(inode *write_inode_node, int inode_number)
     write_block(block_number, (char *)write_inode_node, 32, block_offset * 32);
 }
 
-//创建inode
-inode* create_inode(uint16_t file_type)
+//初始化inode
+inode *init_inode(uint16_t file_type)
 {
-    inode* create_inode_node = (inode *)malloc(32); //为什么要用malloc 这个一开始遇到了什么问题 可以写在报告里面
+    inode *create_inode_node = (inode *)malloc(32); //为什么要用malloc 这个一开始遇到了什么问题 可以写在报告里面
     create_inode_node->file_type = file_type;
     create_inode_node->size = 0;
     create_inode_node->link = 1;
     for (int i = 0; i < 6; i++)
     {
-        create_inode_node->block_point[i] = (uint32_t)0; 
+        create_inode_node->block_point[i] = (uint32_t)0;
     }
     return create_inode_node;
 }
 
 //创建目录项结构体
-dir_item* create_dir_item(uint8_t type, uint32_t node_id, char *name)
+dir_item *init_dir_item(uint8_t type, uint32_t inode_id, char *name)
 {
-    
+    dir_item *create_dir_item_diritem = (dir_item *)malloc(128);
+    create_dir_item_diritem->inode_id = inode_id;
+    create_dir_item_diritem->valid = 1;
+    create_dir_item_diritem->type = type;
+    for (int i = 0; i < 121; i++)
+    {
+        create_dir_item_diritem->name[i] = name[i];
+    }
+    return create_dir_item_diritem;
+}
+
+//写目录
+void write_dir_item(dir_item *dir, inode *read_dir_item_node)
+{
+    int block_number = 0;
+    //首先要读inode中的file_type 如果是FILE则不能创建
+    if (read_dir_item_node->file_type = TYPE_FILE)
+        printf("Wrong Node File Type");
+    int size = read_dir_item_node->size;
+    int block_point_index = size / 1024;
+    int block_offset = size % 1024;
+    if (block_point_index > 6)
+    {
+        printf("Block Point Index Error!\n");
+        return;
+    }
+    if (read_dir_item_node->block_point[block_point_index] == 0)
+    {
+        /* size是从inode中读到的文件大小，根据size可以求出数据块指针的index
+         * 如果数据块的索引值是0的话，就说明需要分配一个数据块，如果不为0，就根据这个索引值找到对应的数据块
+         */
+        block_number = find_free_block();
+        read_dir_item_node->block_point[block_point_index] = block_number;
+    }
+    else
+    {
+        block_number = read_dir_item_node->block_point[block_point_index];
+    }
+    write_block(block_number, (char *)dir, 128, block_offset);
+    read_dir_item_node->size = read_dir_item_node->size + 128;
+}
+
+//读目录
+dir_item *read_dir_item(inode *read_dir_item_node, int block_point_index, int offset_index)
+{
+    char *read_dir_item_buf = read_block(read_dir_item_node->block_point[block_point_index]);
+    return (dir_item *)(read_dir_item_buf + offset_index * 128);
 }
 
 /* 寻找空闲块
