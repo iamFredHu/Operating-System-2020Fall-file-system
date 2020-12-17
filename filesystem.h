@@ -60,6 +60,7 @@ void write_block(int block_number,char *buf,int size,int offset); //写数据块
 inode* read_inode(int inode_number); //读取inode
 void write_inode(inode *write_inode_node, int inode_number); //写入inode
 inode* init_inode(uint16_t file_type); //初始化inode
+uint32_t create_inode(inode *create_inode_node); //创建inode
 
 int find_free_block(); //寻找空闲块
 int find_free_inode(); //寻找空闲inode
@@ -71,7 +72,7 @@ dir_item* read_dir_item(inode* read_dir_item_node,int block_point_index,int offs
 void init_filesystem();        //文件系统初始化
 
 int ls(char *dir);             //进入文件夹
-int mkdir(char *dirName);      //创建文件夹
+inode* mkdir(char *dirName);      //创建文件夹
 int touch(char *fileName);     //创建文件
 int cp(char *ori, char *dest); //复制文件
 void shutdown();               //关闭系统

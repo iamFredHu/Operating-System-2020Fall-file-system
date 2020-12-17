@@ -29,6 +29,7 @@ void init_filesystem()
         //是ext2文件系统，所以可以打开文件系统，读取里面的内容
         info_super_block(sb);
 
+        //读取根目录
         root_dir_node = read_inode(0);
         root_dir_dir_item = init_dir_item(TYPE_DIR, 0, "/");
 
@@ -48,8 +49,13 @@ void init_filesystem()
 
                 //超级块初始化
                 init_super_block(sb);
+                disk_write_block(0, (char *)sb);
+                disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
                 info_super_block(sb);
 
+                //根目录初始化
+                //格式化这里首先要创建根目录
+                root_dir_node = mkdir("/");
                 root_dir_node = read_inode(0);
                 root_dir_dir_item = init_dir_item(TYPE_DIR, 0, "/");
 
@@ -196,6 +202,27 @@ inode *init_inode(uint16_t file_type)
     return create_inode_node;
 }
 
+//创建inode
+uint32_t create_inode(inode *create_inode_node)
+{
+    //找到一个空闲的inode
+    uint32_t create_inode_index = find_free_inode();
+    int block_number = create_inode_index / 32 + 1; //找到数据块，注意这里第一个数据块是超级块
+    int block_offset = create_inode_index % 32;     //数据块偏移
+
+    //分配inode
+    int alloc_inode_index = create_inode_index / 32;
+    int32_t alloc_inode_offset = create_inode_index / 32;
+    uint32_t inode_map_process = 1 << alloc_inode_offset;
+    sb->inode_map[alloc_inode_index] = sb->inode_map[alloc_inode_index] | inode_map_process;
+    sb->free_inode_count = sb->free_inode_count - 1;
+    disk_write_block(0, (char *)sb);
+    disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
+
+    write_block(block_number, (char *)create_inode_node, 32, block_offset * 32);
+    return create_inode_index;
+}
+
 //创建目录项结构体
 dir_item *init_dir_item(uint8_t type, uint32_t inode_id, char *name)
 {
@@ -296,9 +323,39 @@ int ls(char *dir)
 }
 
 //创建文件夹
-int mkdir(char *dirName)
+inode *mkdir(char *dirName)
 {
-    //TODO
+    //创建文件夹首先要改变sb.dir_inode_count(目录inode数)
+    sb->dir_inode_count = sb->dir_inode_count + 1;
+    //然后是区分根目录和非根目录，根据传入的dirName进行判断
+    //这里用到strcmp()函数：比较两个字符串 如果返回值 = 0，则表示 str1 等于 str2
+    //根目录
+    if (strcmp(dirName, "/") == 0)
+    {
+        //给新建的目录进行inode初始化
+        inode *mkdir_node = init_inode(TYPE_DIR);
+        //如果之前已经有根目录了，则不能再创建新的根目录，把这里的信息返回给shell
+        if (root_dir_node)
+        {
+            printf("The root dir has already existed.\n");
+            return 0;
+        }
+        dir_item *current_dir_item = init_dir_item(TYPE_DIR, 0, ".");
+        dir_item *higher_level_dir_item = init_dir_item(TYPE_DIR, 0, "..");
+        write_dir_item(current_dir_item, mkdir_node);
+        write_dir_item(higher_level_dir_item, mkdir_node);
+        create_inode(mkdir_node);
+        disk_write_block(0, (char *)sb);
+        disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
+        return mkdir_node;
+    }
+    //不是根目录
+    else
+    {
+        /* 对于不是根目录的目录来说 明天再做吧 今天好困
+         *
+         */
+    }
 }
 
 //创建文件

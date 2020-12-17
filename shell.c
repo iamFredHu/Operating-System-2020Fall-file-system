@@ -49,8 +49,7 @@ int process_cmd(char *buf)
     {
         strcpy(path, buf + i + 1);
         path[strlen(path) - 1] = '\0';
-        //mkdir(path);
-        printf("mkdir shelltest %s\n", path);
+        mkdir(path);
     }
     else if (strcmp("touch", command) == 0)
     {
