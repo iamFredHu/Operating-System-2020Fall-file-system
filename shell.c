@@ -2,11 +2,8 @@
 文件系统Shell
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 #include "filesystem.c"
+#include "shell.h"
 
 //从键盘输入流中获取命令
 int get_cmd(char *buf, int buf_size)
