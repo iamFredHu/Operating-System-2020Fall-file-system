@@ -4,39 +4,29 @@
 
 #include "filesystem.h"
 #include "disk.c"
+#include "utils.c"
 
 //文件系统初始化
 void init_filesystem()
 {
-
-    //调用open_disk函数 打开磁盘文件
+    //首先调用open_disk()函数打开磁盘
     if (open_disk() < 0)
     {
-        printf("The disk can't be successfully opened!\n");
+        printf("The disk can't be opened.\n");
     }
     else
     {
-        printf("The disk has been successfully opened!\n"); //调试信息，等删除
+        printf("The disk has been successfully opened!\n");
     }
 
-    //read_super_block
-    //读magic_num，判断是否为ext2文件系统，若是则打开文件系统，若不是则进行相应的初始化操作
-    char *init_fs_buf;
-    init_fs_buf = read_block(0);
-    sb = (sp_block *)init_fs_buf;
-    if (sb->magic_num == MAGIC_NUM)
-    {
-        //是ext2文件系统，所以可以打开文件系统，读取里面的内容
-        info_super_block(sb);
+    char *init_filesystem_buf;
+    init_filesystem_buf = read_block(0); //读block_number为0的块
+    sb = (sp_block *)init_filesystem_buf;
 
-        //读取根目录
-        root_dir_node = read_inode(0);
-        root_dir_dir_item = init_dir_item(TYPE_DIR, 0, "/");
-
-        printf("The file system has been opened successfully...\n");
-    }
-    else
+    //读MagicNumber，如果符合MyEXT2的MagicNumber，就认为是已经有内容，反之则进行初始化
+    if (sb->magic_num != MAGIC_NUM) //不符合的话，进行初始化
     {
+        //设置一个变量format_flag,用于循环询问用户是否进行格式化
         int format_flag = 1;
         while (format_flag)
         {
@@ -45,21 +35,33 @@ void init_filesystem()
             getchar();
             if (input_choice == 'y')
             {
-                //进行文件系统初始化
+                //格式化相关操作
 
-                //超级块初始化
-                init_super_block(sb);
-                disk_write_block(0, (char *)sb);
-                disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
-                info_super_block(sb);
+                //根据指导书中的示例，初始空闲数据块数量为4096，初始空闲inode数量为1024
+                sb->magic_num = MAGIC_NUM;
+                sb->dir_inode_count = 0;
+                sb->free_block_count = 4096;
+                sb->free_inode_count = 1024;
 
-                //根目录初始化
-                //格式化这里首先要创建根目录
+                //对block_map和inode_map置0初始化
+                memset(sb->block_map, 0, 512); //Why 512? block_map 128*4(uint32占4个字节)
+                memset(sb->inode_map, 0, 128); //Why 128? inode_map 32*4(uint32占4个字节)
+
+                //标记占用情况 superblock占用block0，inode占用block 1-32
+                for (int i = 0; i < 33; i++)
+                {
+                    int init_fs_index = i / 32;
+                    int32_t init_fs_offset = i % 32;
+                    sb->block_map[init_fs_index] = sb->block_map[init_fs_index] | (1 << init_fs_offset);
+                    sb->free_block_count = sb->free_block_count - 1;
+                    //superblock占用 magic_number 4B free_block_count 4B dir_inode_count 4B block_map 128*4B inode_map 32*4B 一共652B
+                    //而data_block，即DEVICE_BLOCK_SIZE为512，所以要占用两个block
+                    disk_write_block(0, (char *)sb);
+                    disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
+                }
+                //设置根目录项
                 root_dir_node = mkdir("/");
-                root_dir_node = read_inode(0);
-                root_dir_dir_item = init_dir_item(TYPE_DIR, 0, "/");
-
-                printf("Formating finished,good luck and have fun!\n");
+                printf("The file system has been formatted,have a good time!\n");
                 format_flag = 0;
             }
             else if (input_choice == 'n')
@@ -73,43 +75,15 @@ void init_filesystem()
             }
         }
     }
-}
+    //初始化完毕后，或是已有信息，就可以进入文件系统了
+    info_super_block(sb);
 
-//初始化超级块
-void init_super_block(sp_block *init_super_block_sb)
-{
-    init_super_block_sb->magic_num = MAGIC_NUM;
-    init_super_block_sb->free_block_count = 4096 - 1 - 32; //空闲数据块数
-    init_super_block_sb->free_inode_count = 1024;          //空闲inode数 在这里我们的节点数是32*32
-    init_super_block_sb->dir_inode_count = 0;
-
-    /*
-    * 有关数据块大小的计算
-    * 示例中一共可以表示128*32=4096个数据块 其中超级块和inode也需要占用数据块
-    * 每个数据块的大小为1KiB
-    * 超级块占用1个数据块 inode占用 32 * 1024(1024个inode，每个inode占用32B空间) / 1024 KiB  
-    */
-
-    //数据块和inode位图初始化
-    memset(init_super_block_sb->block_map, 0, sizeof(init_super_block_sb->block_map));
-    memset(init_super_block_sb->inode_map, 0, sizeof(init_super_block_sb->inode_map));
-
-    //表明数据块已占用， 0-super bock 1-32 inode
-    for (int i = 0; i < 33; i++)
-    {
-        //对block_map按位操作
-        int index = i / 32;
-        int32_t offset = i % 32;
-        uint32_t block_map_process = 1 << offset;
-        init_super_block_sb->block_map[index] |= block_map_process;
-        init_super_block_sb->free_block_count = init_super_block_sb->free_block_count - 1;
-        disk_write_block(0, (char *)init_super_block_sb);
-        disk_write_block(1, (char *)init_super_block_sb + DEVICE_BLOCK_SIZE);
-    }
-
-    /*
-    * 对于inode位图和数据块位图初始化还有些没弄清楚，后面再改一下
-    */
+    //从inode number为0的地方读取根目录inode，所以上面格式化的时候就要设置一个根目录的inode
+    root_dir_node = read_inode(0);
+    //根目录dir_item初始化
+    root_dir_dir_item = init_dir_item(TYPE_DIR,0,"/");
+    //目录栈初始化
+    path_t.top_item = -1;
 }
 
 //读数据块
@@ -352,8 +326,9 @@ inode *mkdir(char *dirName)
     //不是根目录
     else
     {
-        /* 对于不是根目录的目录来说 明天再做吧 今天好困
-         *
+        /* 对于不是根目录的目录来说 
+         * 1、要找到上一级目录的dir_item以及inode，然后创建一个新的dir_item
+         * 2、更新inode和dir_item
          */
     }
 }

@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <string.h>
 
+
 #define MAX_INODE_NUM 1024
 #define MAGIC_NUM 14598366
 #define MAX_NUM 1 << 31
@@ -45,13 +46,19 @@ typedef struct dir_item
     char name[121];    // 目录项表示的文件/目录的文件名/目录名
 } dir_item;
 
+typedef struct path_transfer
+{
+    dir_item dir_item_stack[20];
+    int top_item;
+} path_tf;
+
 sp_block *sb;
 inode node[MAX_INODE_NUM];
+path_tf path_t;
 
 inode *root_dir_node;
 dir_item *root_dir_dir_item;
 
-void init_super_block(sp_block *sb);  //初始化超级块
 void info_super_block(sp_block *sb);  //获取超级块信息
 
 char* read_block(int block_number); //读数据块
