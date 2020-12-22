@@ -72,9 +72,13 @@ uint32_t create_inode(inode *create_inode_node); //创建inode
 int find_free_block(); //寻找空闲块
 int find_free_inode(); //寻找空闲inode
 
+char* transfer_path(char **path); //处理路径
+
 dir_item* init_dir_item(uint8_t type, uint32_t inode_id, char *name); //创建目录项结构体
 void write_dir_item(dir_item* dir,inode* read_dir_item_node); //写目录
 dir_item* read_dir_item(inode* read_dir_item_node,int block_point_index,int offset_index); //读目录
+void search_dir_item(char *path,char **dir_name,dir_item** current_dir_item,dir_item** higher_level_dir_item,int flag); //查找目录
+dir_item* search_dir_item_in_inode(inode* dir_inode,char *dir_name,int *block_index,int *block_offset,int flag); //已知inode，找到dir_item的名字
 
 void init_filesystem();        //文件系统初始化
 

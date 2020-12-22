@@ -81,7 +81,7 @@ void init_filesystem()
     //从inode number为0的地方读取根目录inode，所以上面格式化的时候就要设置一个根目录的inode
     root_dir_node = read_inode(0);
     //根目录dir_item初始化
-    root_dir_dir_item = init_dir_item(TYPE_DIR,0,"/");
+    root_dir_dir_item = init_dir_item(TYPE_DIR, 0, "/");
     //目录栈初始化
     path_t.top_item = -1;
 }
@@ -197,6 +197,34 @@ uint32_t create_inode(inode *create_inode_node)
     return create_inode_index;
 }
 
+//处理路径
+char *transfer_path(char **path)
+{
+    char *pathString;
+    char *endString;
+
+    pathString = *path;
+    if (pathString[0] == '/')
+    {
+        pathString = pathString + 1;
+    }
+    endString = pathString;
+    while (*endString != '/' && *endString != '\0')
+    {
+        endString = endString + 1;
+    }
+
+    //求字符串长度
+    int string_len = endString - pathString;
+    char *string = (char *)malloc(string_len);
+    for (int i = 0; i < string_len; i++)
+    {
+        string[i] = pathString[i];
+    }
+    *path = endString;
+    return string;
+}
+
 //创建目录项结构体
 dir_item *init_dir_item(uint8_t type, uint32_t inode_id, char *name)
 {
@@ -247,6 +275,128 @@ dir_item *read_dir_item(inode *read_dir_item_node, int block_point_index, int of
 {
     char *read_dir_item_buf = read_block(read_dir_item_node->block_point[block_point_index]);
     return (dir_item *)(read_dir_item_buf + offset_index * 128);
+}
+
+//已知inode，找到dir_item的名字
+dir_item *search_dir_item_in_inode(inode *dir_node, char *dir_name, int *block_index, int *block_offset, int flag)
+{
+    int dir_item_number = dir_node->size / 128;
+    *block_offset = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        if (dir_node->block_point[i] != 0)
+        {
+            dir_item_number = dir_item_number - 8;
+            int dir_item_per_block;
+            int last_flag;
+            if (dir_item_number >= 0)
+            {
+                dir_item_per_block = 8;
+            }
+            else
+            {
+                dir_item_per_block = dir_item_number + 8;
+            }
+            if (dir_item_number < 0)
+            {
+                last_flag = 1;
+            }
+            else
+            {
+                last_flag = 0;
+            }
+            for (int j = 0; j < dir_item_per_block; j++)
+            {
+                dir_item *sdiii_dir_item = read_dir_item(dir_node, i, j);
+                if (sdiii_dir_item->valid && flag)
+                {
+                    printf("%s %s\n", sdiii_dir_item->name, sdiii_dir_item->type == TYPE_FILE ? "\e[35;1mFILE\e[0m" : "\e[36;1mDIR\e[0m");
+                }
+                if (strcmp(sdiii_dir_item->name, dir_name) == 0)
+                {
+                    *block_index = i;
+                    *block_offset = 128 * j;
+                    return sdiii_dir_item;
+                }
+            }
+            *block_offset = *block_offset + 128 * dir_item_per_block;
+            if (last_flag)
+            {
+                *block_index = i;
+            }
+        }
+    }
+    return (dir_item *)0;
+}
+
+//查找目录
+void search_dir_item(char *path, char **dir_name, dir_item **current_dir_item, dir_item **higher_level_dir_item, int flag)
+{
+    //，如果是根目录的话
+    if (!strcmp(path, "/"))
+    {
+        *higher_level_dir_item = root_dir_dir_item;
+        *current_dir_item = root_dir_dir_item;
+        *dir_name = "/";
+        //如果是根目录，上级目录和当前目录的dir_item都是根目录的dir_item
+        if (flag)
+        {
+            path_t.top_item = -1;
+            push_dir_item(root_dir_dir_item);
+        }
+        return;
+    }
+
+    //如果目录是..（按指导书中说明是上级目录）
+    if (path[0] == '.' && path[1] == '.')
+    {
+        *current_dir_item = top_dir_item(1);
+        transfer_path(&path);
+        //int memcmp(const void *str1, const void *str2, size_t n));
+        //如果返回值 < 0，则表示 str1 小于 str2
+        //如果返回值 > 0，则表示 str2 小于 str1
+        int memcmp_flag = memcmp(top_dir_item(0)->name, "/", sizeof("/"));
+        if (flag && memcmp_flag != 0)
+        {
+            pop_dir_item();
+        }
+    }
+    else if (path[0] == '/')
+    {
+        *current_dir_item = root_dir_dir_item;
+        if (flag)
+        {
+            path_t.top_item = -1;
+            push_dir_item(root_dir_dir_item);
+        }
+    }
+    else if (path[0] == '.')
+    {
+        transfer_path(&path);
+        *current_dir_item = top_dir_item(0);
+    }
+    else
+    {
+        *current_dir_item = top_dir_item(0);
+    }
+
+    while (*dir_name = transfer_path(&path))
+    {
+        if (strlen(*dir_name) == 0)
+            break;
+        //测试信息 待删除
+        printf("TEST INFORMATION: find_dir_item() path:%s dir_name:%s, len:%ld\n", path, *dir_name, strlen(*dir_name));
+        int block_index = 0;
+        int block_offset = 0;
+        int current_dir_item_inode_id = (*current_dir_item)->inode_id;
+        inode *current_dir_node = read_inode(current_dir_item_inode_id);
+        if (current_dir_node->file_type == TYPE_FILE)
+        {
+            printf("ERROR INFORMATION: FILE TYPE ERROR, NOT A DIR\n");
+            return;
+        }
+        // TODO dir_item* lower_level_dir_item =
+    }
 }
 
 /* 寻找空闲块
@@ -330,6 +480,8 @@ inode *mkdir(char *dirName)
          * 1、要找到上一级目录的dir_item以及inode，然后创建一个新的dir_item
          * 2、更新inode和dir_item
          */
+
+        //创建目录分为目录存在或不存在两种可能，所以需要调用函数进行判断
     }
 }
 
