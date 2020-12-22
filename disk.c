@@ -1,5 +1,4 @@
 #include "disk.h"
-
 #include <stdio.h>
 
 inline int get_disk_size()
