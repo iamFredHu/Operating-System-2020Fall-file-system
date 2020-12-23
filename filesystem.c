@@ -4,7 +4,6 @@
 
 #include "filesystem.h"
 #include "disk.c"
-#include "utils.c"
 
 //文件系统初始化
 void init_filesystem()
@@ -197,6 +196,52 @@ uint32_t create_inode(inode *create_inode_node)
     return create_inode_index;
 }
 
+void push_dir_item(dir_item *push_dir_item_dir_item)
+{
+    path_t.top_item = path_t.top_item + 1;
+    //目录长度过长判断（预设）
+    /*
+    if(path_t.top_item > 19)
+    {
+        printf("ERROR:The path is too long.\n");
+        return -1;
+    }
+     */
+    path_t.dir_item_stack[path_t.top_item].inode_id = push_dir_item_dir_item->inode_id;
+    memmove(path_t.dir_item_stack[path_t.top_item].name, push_dir_item_dir_item->name, 121);
+    path_t.dir_item_stack[path_t.top_item].type = push_dir_item_dir_item->type;
+    path_t.dir_item_stack[path_t.top_item].valid = push_dir_item_dir_item->valid;
+}
+
+dir_item *pop_dir_item()
+{
+    //为空
+    if (path_t.top_item == -1)
+    {
+        return (dir_item *)0;
+    }
+    dir_item *pop_dir_item_dir_item = &path_t.dir_item_stack[path_t.top_item];
+    path_t.top_item = path_t.top_item - 1;
+    return pop_dir_item_dir_item;
+}
+
+dir_item *top_dir_item(int number)
+{
+    if (path_t.top_item == -1)
+    {
+        return (dir_item *)0;
+    }
+
+    if (path_t.top_item - number >= 0)
+    {
+        return &path_t.dir_item_stack[path_t.top_item - number];
+    }
+    else
+    {
+        return &path_t.dir_item_stack[0];
+    }
+}
+
 //处理路径
 char *transfer_path(char **path)
 {
@@ -330,7 +375,7 @@ dir_item *search_dir_item_in_inode(inode *dir_node, char *dir_name, int *block_i
 }
 
 //查找目录
-void search_dir_item(char *path, char **dir_name, dir_item **current_dir_item, dir_item **higher_level_dir_item, int flag)
+int search_dir_item(char *path, char **dir_name, dir_item **current_dir_item, dir_item **higher_level_dir_item, int flag)
 {
     //，如果是根目录的话
     if (!strcmp(path, "/"))
@@ -344,7 +389,7 @@ void search_dir_item(char *path, char **dir_name, dir_item **current_dir_item, d
             path_t.top_item = -1;
             push_dir_item(root_dir_dir_item);
         }
-        return;
+        return 0;
     }
 
     //如果目录是..（按指导书中说明是上级目录）
@@ -393,10 +438,29 @@ void search_dir_item(char *path, char **dir_name, dir_item **current_dir_item, d
         if (current_dir_node->file_type == TYPE_FILE)
         {
             printf("ERROR INFORMATION: FILE TYPE ERROR, NOT A DIR\n");
-            return;
+            return -1;
         }
-        // TODO dir_item* lower_level_dir_item =
+        dir_item *lower_level_dir_item = search_dir_item_in_inode(current_dir_node, *dir_name, &block_index, &block_offset, 0);
+        if (!lower_level_dir_item)
+        {
+            //测试信息 待删除
+            printf("TEST INFORMATION: %s NOT EXIST\n", *dir_name);
+            return -1;
+        }
+        *higher_level_dir_item = *current_dir_item;
+        *current_dir_item = lower_level_dir_item;
+        if (lower_level_dir_item->type == TYPE_FILE)
+        {
+            //测试信息 待删除
+            printf("TEST INFORMATION: %s IS A FILE\n", *dir_name);
+            return 0;
+        }
+        if (flag)
+        {
+            push_dir_item(lower_level_dir_item);
+        }
     }
+    return 0;
 }
 
 /* 寻找空闲块
@@ -447,14 +511,14 @@ int ls(char *dir)
 }
 
 //创建文件夹
-inode *mkdir(char *dirName)
+inode *mkdir(char *path)
 {
     //创建文件夹首先要改变sb.dir_inode_count(目录inode数)
     sb->dir_inode_count = sb->dir_inode_count + 1;
     //然后是区分根目录和非根目录，根据传入的dirName进行判断
     //这里用到strcmp()函数：比较两个字符串 如果返回值 = 0，则表示 str1 等于 str2
     //根目录
-    if (strcmp(dirName, "/") == 0)
+    if (strcmp(path, "/") == 0)
     {
         //给新建的目录进行inode初始化
         inode *mkdir_node = init_inode(TYPE_DIR);
@@ -482,6 +546,38 @@ inode *mkdir(char *dirName)
          */
 
         //创建目录分为目录存在或不存在两种可能，所以需要调用函数进行判断
+        dir_item *current_dir_item;
+        dir_item *higher_level_dir_item;
+        inode *current_inode;
+        inode *lower_level_inode;
+        char *dir_name;
+        printf("TEST INFORMATION: path %s\n", path);
+        int search_result = search_dir_item(path, &dir_name, &current_dir_item, &higher_level_dir_item, 0);
+        if (search_result < 0)
+        {
+            //测试信息
+            printf("TEST INFORMATION: PATH NOT FOUND NOW CREATE %s\n", path);
+            printf("TEST INFORMATION: search return %d\n",search_result);
+            //标记一下 这里开始出bug
+            //因为目录不存在，所以进行创建
+            lower_level_inode = init_inode(TYPE_DIR);
+            uint32_t inode_index = create_inode(lower_level_inode);
+            dir_item *new_dir_dir_item = init_dir_item(TYPE_DIR, inode_index, dir_name);
+            printf("TEST1\n");
+            //创建.和..的目录 分别表示当前目录和上级目录
+            write_dir_item(init_dir_item(TYPE_DIR, new_dir_dir_item->inode_id, "."), lower_level_inode);
+            write_dir_item(init_dir_item(TYPE_DIR, current_dir_item->inode_id, ".."), lower_level_inode);
+            write_inode(lower_level_inode, new_dir_dir_item->inode_id);
+            printf("TEST2\n");
+            current_inode = read_inode(current_dir_item->inode_id);
+            write_dir_item(new_dir_dir_item, current_inode);
+            write_inode(current_inode, current_dir_item->inode_id);
+            printf("TEST3\n");
+            lower_level_inode = mkdir(path);
+            disk_write_block(0, (char *)sb);
+            disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
+            return lower_level_inode;
+        }
     }
 }
 
