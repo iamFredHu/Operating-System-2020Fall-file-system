@@ -38,5 +38,10 @@
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
   "command": "/bin/gcc-8     -o CMakeFiles/myext2fs.dir/block.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/block.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/block.c"
+},
+{
+  "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
+  "command": "/bin/gcc-8     -o CMakeFiles/myext2fs.dir/path.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/path.c",
+  "file": "/home/180110505/Operating-System-2020Fall-file-system/path.c"
 }
 ]

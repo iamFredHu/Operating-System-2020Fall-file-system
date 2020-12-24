@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
+#include "path.h"
 
 //inode 初始化，即给定相关参数 初始化一个inode
 inode *init_inode(uint16_t file_type)
@@ -42,7 +43,6 @@ uint32_t get_free_inode()
         {
             if (((sb->inode_map[i] >> j) & 1) == 0)
             {
-                printf("find one inode: %d\n", i * 32 + j);
                 return i * 32 + j;
             }
         }

@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/180110505/Operating-System-2020Fall-file-system/disk.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/myext2fs.dir/disk.c.o"
   "/home/180110505/Operating-System-2020Fall-file-system/file_system.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/myext2fs.dir/file_system.c.o"
   "/home/180110505/Operating-System-2020Fall-file-system/inode.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/myext2fs.dir/inode.c.o"
+  "/home/180110505/Operating-System-2020Fall-file-system/path.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/myext2fs.dir/path.c.o"
   "/home/180110505/Operating-System-2020Fall-file-system/shell.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/myext2fs.dir/shell.c.o"
   "/home/180110505/Operating-System-2020Fall-file-system/utils.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/myext2fs.dir/utils.c.o"
   )

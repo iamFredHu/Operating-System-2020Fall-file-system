@@ -2,7 +2,14 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "command.h"
+#include "disk.h"
+#include "inode.h"
 #include "file_system.h"
+#include "utils.h"
+#include "dir_item.h"
+#include "block.h"
+#include "path.h"
 /* Copy From XV6 */
 int gets(char *buf, int max)
 {

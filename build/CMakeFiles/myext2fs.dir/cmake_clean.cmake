@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/myext2fs.dir/command.c.o"
   "CMakeFiles/myext2fs.dir/dir_item.c.o"
   "CMakeFiles/myext2fs.dir/block.c.o"
+  "CMakeFiles/myext2fs.dir/path.c.o"
   "myext2fs.pdb"
   "myext2fs"
 )

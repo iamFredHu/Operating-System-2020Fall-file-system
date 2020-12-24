@@ -682,6 +682,33 @@ inode.c.s:
 	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/inode.c.s
 .PHONY : inode.c.s
 
+path.o: path.c.o
+
+.PHONY : path.o
+
+# target to build an object file
+path.c.o:
+	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/path.c.o
+.PHONY : path.c.o
+
+path.i: path.c.i
+
+.PHONY : path.i
+
+# target to preprocess a source file
+path.c.i:
+	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/path.c.i
+.PHONY : path.c.i
+
+path.s: path.c.s
+
+.PHONY : path.s
+
+# target to generate assembly for a file
+path.c.s:
+	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/path.c.s
+.PHONY : path.c.s
+
 shell.o: shell.c.o
 
 .PHONY : shell.o
@@ -794,6 +821,9 @@ help:
 	@echo "... inode.o"
 	@echo "... inode.i"
 	@echo "... inode.s"
+	@echo "... path.o"
+	@echo "... path.i"
+	@echo "... path.s"
 	@echo "... shell.o"
 	@echo "... shell.i"
 	@echo "... shell.s"

@@ -10,6 +10,7 @@
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
+#include "path.h"
 
 void shutdown_cmd()
 {

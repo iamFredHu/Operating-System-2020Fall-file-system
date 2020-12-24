@@ -37,26 +37,13 @@ typedef struct dir_item
     char name[121];    // 目录项表示的文件/目录的文件名/目录名    121 * 1B = 121 B
 } dir_item;
 
-/* 路径栈 */
-typedef struct path_stack_t
-{
-    struct dir_item stack[20];
-    int top;
-} path_stack_t;
-
-//初始变量设置
 //超级块
 sp_block *sb;
 //根目录inode
 inode *root_dir_node;
 //根目录dir_item
 dir_item *root_dir_item;
-//路径栈
-path_stack_t path_stack;
 
-dir_item *top(int n);
-dir_item *pop();
-int push(struct dir_item *dir_item);
 int init_file_system();
 
 #endif

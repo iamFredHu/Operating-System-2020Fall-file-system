@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
+#include "path.h"
 
 //找空闲的block（数据块）
 /* 如何找空闲的block呢？

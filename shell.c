@@ -3,10 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "file_system.h"
-#include "inode.h"
-#include "utils.h"
 #include "command.h"
+#include "disk.h"
+#include "inode.h"
+#include "file_system.h"
+#include "utils.h"
+#include "dir_item.h"
+#include "block.h"
+#include "path.h"
 //全局变量 用于存放指令类型
 int command_type = 0;
 //全局变量 用于存放路径 用一个二维数组表示

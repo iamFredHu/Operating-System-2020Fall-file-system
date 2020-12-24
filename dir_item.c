@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
+#include "path.h"
 
 //dir_item 初始化，即给定相关参数 初始化一个dir_item
 dir_item *init_dir_item(uint8_t type, uint32_t inode_id, char *name)
