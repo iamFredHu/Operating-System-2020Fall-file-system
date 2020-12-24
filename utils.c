@@ -29,13 +29,6 @@ int gets(char *buf, int max)
   return strlen(buf);
 }
 
-void panic(char *str)
-{
-  printf("%s \n", str);
-  while (1)
-    ;
-}
-
 char *peek_path(char **path)
 {
   char *ps, *es;
@@ -48,21 +41,13 @@ char *peek_path(char **path)
     es++;
   }
   int token_len = es - ps;
-  char *token = (char *)malloc(token_len);
+  char *str = (char *)malloc(token_len);
   for (int i = 0; i < token_len; i++)
   {
-    token[i] = ps[i];
+    str[i] = ps[i];
   }
   *path = es;
-  return token;
-}
-
-char *join(char *s1, char *s2)
-{
-  char *result = (char *)malloc(strlen(s1) + strlen(s2) + 1);
-  strcpy(result, s1);
-  strcat(result, s2);
-  return result;
+  return str;
 }
 
 char *get_file_name(char *path)
@@ -89,4 +74,40 @@ char *get_file_name(char *path)
     name[i] = ps[i];
   }
   return name;
+}
+
+int process_path(char **ps, char *es, int divide_position, char *divided_str)
+{
+  char *s;
+  //用于暂存s
+  char *temp_s;
+  //序号
+  int index = divide_position;
+  //input_command + divide_position 到type以后
+  s = *ps + divide_position;
+
+  char *end;
+  //如果是特殊符号（包括空格）则++
+  while (s < es && strchr(" \t\r\n\v", *s))
+  {
+    s++;
+    index++;
+  }
+  temp_s = s;
+  //找到末尾
+  while (s < es && !strchr(" \t\r\n\v", *s))
+  {
+    s++;
+    index++;
+  }
+  //末尾
+  end = s;
+  s = temp_s;
+  while (s < end)
+  {
+    *(divided_str++) = *s;
+    s++;
+  }
+  *divided_str = '\0';
+  return index;
 }

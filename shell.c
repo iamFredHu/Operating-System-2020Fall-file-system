@@ -11,6 +11,7 @@
 #include "dir_item.h"
 #include "block.h"
 #include "path.h"
+
 //全局变量 用于存放指令类型
 int command_type = 0;
 //全局变量 用于存放路径 用一个二维数组表示
@@ -25,43 +26,6 @@ char command_path[20][256];
  * 5 - shutdown （关闭系统）
  */
 
-int divide_path(char **ps, char *es, int divide_position, char *divided_str)
-{
-    //仿照xv6源代码中的sh.c进行编写
-    char *s;
-    //用于暂存s
-    char *temp_s;
-    //序号
-    int index = divide_position;
-    //input_command + divide_position 到type以后
-    s = *ps + divide_position;
-
-    char *end;
-    //如果是特殊符号（包括空格）则++
-    while (s < es && strchr(" \t\r\n\v", *s))
-    {
-        s++;
-        index++;
-    }
-    temp_s = s;
-    //找到末尾
-    while (s < es && !strchr(" \t\r\n\v", *s))
-    {
-        s++;
-        index++;
-    }
-    //末尾
-    end = s;
-    s = temp_s;
-    while (s < end)
-    {
-        *(divided_str++) = *s;
-        s++;
-    }
-    *divided_str = '\0';
-    return index;
-}
-
 void analyse_command(char *input_command, int input_len)
 {
     int divide_position = 0;
@@ -75,7 +39,7 @@ void analyse_command(char *input_command, int input_len)
         //cmd_type指从输入的cmd中分开得到的type类型指令（ls、mkdir等）
         char *cmd_type = (char *)malloc(256);
         //用divide_path找到type和path分开的位置
-        divide_position = divide_path(&input_command, input_command + input_len, divide_position, cmd_type);
+        divide_position = process_path(&input_command, input_command + input_len, divide_position, cmd_type);
         //只有第一个空格才属于type
         if (index == 1)
         {

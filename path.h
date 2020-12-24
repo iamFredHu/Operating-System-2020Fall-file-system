@@ -5,7 +5,7 @@
 /* 路径栈 */
 typedef struct path_stack_t
 {
-    struct dir_item stack[20];
+    dir_item stack[20];
     int top;
 } path_stack_t;
 
