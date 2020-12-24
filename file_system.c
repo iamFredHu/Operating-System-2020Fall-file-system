@@ -330,7 +330,6 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
     }
     else if (path[0] == '/')
     {
-        /* /dawdawd/awdaw */
         *current_dir_item = root_dir_item;
         if (is_follow)
         {
@@ -370,7 +369,7 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
         *current_dir_item = next_dir_item;
         if (next_dir_item->type == TYPE_FILE)
         {
-            printf("find_inde() %s is a file , stop here!\n", *dir_name);
+            printf("find_inode() %s is a file , stop here!\n", *dir_name);
             return 0;
         }
         if (is_follow)
