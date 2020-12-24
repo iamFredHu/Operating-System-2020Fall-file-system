@@ -171,7 +171,7 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
             search_dir_item_in_inode_by_name(current_dir_node, *dir_name, &blk_index, &block_off, 0);
         if (!next_dir_item)
         {
-            printf("ERROR INFO: The dir does not exist!\n", *dir_name);
+            //printf("ERROR INFO: The dir does not exist!\n", *dir_name);
             return -1;
         }
         *up_dir_item = *current_dir_item;

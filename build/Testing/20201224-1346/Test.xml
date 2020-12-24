@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-g++-8"
+	BuildStamp="20201224-1346-Experimental"
+	Name="HITSZLab"
+	Generator="ctest-3.13.4"
+	CompilerName="/bin/g++-8"
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="HITSZLab"
+	OSRelease="4.19.0-11-amd64"
+	OSVersion="#1 SMP Debian 4.19.146-1 (2020-09-17)"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="79"
+	ProcessorCacheSize="16384"
+	NumberOfLogicalCPU="40"
+	NumberOfPhysicalCPU="40"
+	TotalVirtualMemory="61436"
+	TotalPhysicalMemory="60387"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="2200"
+	>
+	<Testing>
+		<StartDateTime>Dec 24 21:46 CST</StartDateTime>
+		<StartTestTime>1608817569</StartTestTime>
+		<TestList/>
+		<EndDateTime>Dec 24 21:46 CST</EndDateTime>
+		<EndTestTime>1608817569</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

@@ -56,7 +56,13 @@ int init_file_system()
                 //标记占用情况 superblock占用block0，inode占用block 1-32
                 for (int i = 0; i < 33; i++)
                 {
-                    alloc_block(i);
+                    //分配数据块
+                    sb->block_map[i / 32] = sb->block_map[i / 32] | (1 << i % 32);
+                    //每分配一次，空闲的数据块数量减少一个
+                    sb->free_block_count--;
+                    //写入磁盘，注意超级块占两个块
+                    disk_write_block(0, (char *)sb);
+                    disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
                 }
                 //设置根目录项
                 root_dir_node = mkdir_cmd("/");

@@ -34,17 +34,6 @@ uint32_t search_free_block()
     }
 }
 
-//数据块的分配
-void alloc_block(uint32_t block_id)
-{
-    sb->block_map[block_id / 32] = sb->block_map[block_id / 32] | (1 << block_id % 32);
-    //每分配一次，空闲的数据块数量减少一个
-    sb->free_block_count--;
-    //写入磁盘，注意超级块占两个块
-    disk_write_block(0, (char *)sb);
-    disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
-}
-
 //根据block_id从磁盘中读对应的块
 char *read_block(uint32_t block_id)
 {
