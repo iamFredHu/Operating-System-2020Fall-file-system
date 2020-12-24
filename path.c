@@ -14,118 +14,109 @@
 
 dir_item *top(int n)
 {
-    if (path_stack.top == -1 ? 1 : 0)
+    if (path_stack.number == -1 ? 1 : 0)
     {
-        return (struct dir_item *)0;
+        return 0;
     }
 
-    return path_stack.top - n >= 0 ? &path_stack.stack[path_stack.top - n] : &path_stack.stack[0];
+    return path_stack.number - n >= 0 ? &path_stack.path_t[path_stack.number - n] : &path_stack.path_t[0];
 }
 
-dir_item *pop()
+//入栈
+int push(dir_item *dir_item)
 {
-    if (path_stack.top == -1 ? 1 : 0)
-    {
-        return (struct dir_item *)0;
-    }
-    struct dir_item *item = &path_stack.stack[path_stack.top];
-    path_stack.top--;
-    return item;
-}
-
-int push(struct dir_item *dir_item)
-{
-    path_stack.top++;
-    if (path_stack.top > 19)
+    path_stack.number++;
+    if (path_stack.number > 19)
     {
         return -1;
     }
-    path_stack.stack[path_stack.top].inode_id = dir_item->inode_id;
-    memmove(path_stack.stack[path_stack.top].name, dir_item->name, 121);
-    path_stack.stack[path_stack.top].type = dir_item->type;
-    path_stack.stack[path_stack.top].valid = dir_item->valid;
+    path_stack.path_t[path_stack.number].inode_id = dir_item->inode_id;
+    memmove(path_stack.path_t[path_stack.number].name, dir_item->name, 121);
+    path_stack.path_t[path_stack.number].type = dir_item->type;
+    path_stack.path_t[path_stack.number].valid = dir_item->valid;
     return 0;
 }
 
 char *get_file_name(char *path)
 {
-  int path_len = strlen(path);
-  char *ps, *es;
-  es = ps = path + path_len;
-  for (int i = path_len - 1; i >= 0; i--)
-  {
-    if (path[i] != '/')
+    int path_len = strlen(path);
+    char *start, *end;
+    end = start = path + path_len;
+    for (int i = path_len - 1; i >= 0; i--)
     {
-      ps--;
+        if (path[i] != '/')
+        {
+            start--;
+        }
+        else
+        {
+            break;
+        }
     }
-    else
+    int file_name_len = end - start;
+    char *file_name = (char *)malloc(file_name_len);
+    for (int i = 0; i < file_name_len; i++)
     {
-      break;
+        file_name[i] = start[i];
     }
-  }
-  int name_len = es - ps;
-
-  char *name = (char *)malloc(name_len);
-  for (int i = 0; i < name_len; i++)
-  {
-    name[i] = ps[i];
-  }
-  return name;
+    return file_name;
 }
 
-int process_path(char **ps, char *es, int divide_position, char *divided_str)
+//拆分path中
+int process_cmd(char **ps, char *es, int divide_position, char *divided_str)
 {
-  char *s;
-  //用于暂存s
-  char *temp_s;
-  //序号
-  int index = divide_position;
-  //input_command + divide_position 到type以后
-  s = *ps + divide_position;
+    char *s;
+    //用于暂存s
+    char *temp_s;
+    //序号
+    int index = divide_position;
+    //input_command + divide_position 到type以后
+    s = *ps + divide_position;
 
-  char *end;
-  //如果是特殊符号（包括空格）则++
-  while (s < es && strchr(" \t\r\n\v", *s))
-  {
-    s++;
-    index++;
-  }
-  temp_s = s;
-  //找到末尾
-  while (s < es && !strchr(" \t\r\n\v", *s))
-  {
-    s++;
-    index++;
-  }
-  //末尾
-  end = s;
-  s = temp_s;
-  while (s < end)
-  {
-    *(divided_str++) = *s;
-    s++;
-  }
-  *divided_str = '\0';
-  return index;
+    char *end;
+    //如果是特殊符号（包括空格）则++
+    while (s < es && strchr(" \t\r\n\v", *s))
+    {
+        s++;
+        index++;
+    }
+    temp_s = s;
+    //找到末尾
+    while (s < es && !strchr(" \t\r\n\v", *s))
+    {
+        s++;
+        index++;
+    }
+    //末尾
+    end = s;
+    s = temp_s;
+    while (s < end)
+    {
+        *(divided_str++) = *s;
+        s++;
+    }
+    *divided_str = '\0';
+    return index;
 }
 
-char *peek_path(char **path)
+//用于查看path中的"/"
+char *watch_path(char **path)
 {
-  char *ps, *es;
-  ps = *path;
-  if (ps[0] == '/')
-    ps++;
-  es = ps;
-  while (*es != '/' && *es != '\0')
-  {
-    es++;
-  }
-  int token_len = es - ps;
-  char *str = (char *)malloc(token_len);
-  for (int i = 0; i < token_len; i++)
-  {
-    str[i] = ps[i];
-  }
-  *path = es;
-  return str;
+    char *start, *end;
+    start = *path;
+    if (start[0] == '/')
+        start++;
+    end = start;
+    while (*end != '/' && *end != '\0')
+    {
+        end++;
+    }
+    int len = end - start;
+    char *str = (char *)malloc(len);
+    for (int i = 0; i < len; i++)
+    {
+        str[i] = start[i];
+    }
+    *path = end;
+    return str;
 }

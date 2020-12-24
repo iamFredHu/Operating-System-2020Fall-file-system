@@ -38,7 +38,7 @@ void analyse_command(char *input_command, int input_len)
         //cmd_type指从输入的cmd中分开得到的type类型指令（ls、mkdir等）
         char *cmd_type = (char *)malloc(256);
         //用divide_path找到type和path分开的位置
-        divide_position = process_path(&input_command, input_command + input_len, divide_position, cmd_type);
+        divide_position = process_cmd(&input_command, input_command + input_len, divide_position, cmd_type);
         //只有第一个空格才属于type
         if (index == 1)
         {

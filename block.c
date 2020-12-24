@@ -34,7 +34,7 @@ uint32_t search_free_block()
 }
 
 //根据block_id从磁盘中读对应的块
-char *read_block(uint32_t block_id)
+char *read_data_block(uint32_t block_id)
 {
     //设置一个临时的buf，分配内存空间并赋初值0
     char *read_block_buf = (char *)malloc(1024);
@@ -46,15 +46,15 @@ char *read_block(uint32_t block_id)
 }
 
 //写数据块
-int write_block(uint32_t block_id, char *buf, int size, int offset)
+int write_data_block(uint32_t block_id, char *buf, int size, int offset)
 {
     //首先要进行数据块的分配
     sb->block_map[block_id / 32] = sb->block_map[block_id / 32] | (1 << block_id % 32);
     sb->free_block_count = sb->free_block_count - 1;
     disk_write_block(0, (char *)sb);
     disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
-
-    char *write_block_buf = read_block(block_id);
+    //把数据块写入磁盘
+    char *write_block_buf = read_data_block(block_id);
     memmove(write_block_buf + offset, buf, size);
     disk_write_block(block_id * 2, write_block_buf);
     disk_write_block(block_id * 2 + 1, write_block_buf + DEVICE_BLOCK_SIZE);

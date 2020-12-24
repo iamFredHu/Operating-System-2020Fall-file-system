@@ -26,7 +26,7 @@ int init_file_system()
 
     char *init_filesystem_buf;
     //读block_number为0的块
-    init_filesystem_buf = read_block(0);
+    init_filesystem_buf = read_data_block(0);
     sb = (sp_block *)init_filesystem_buf;
     //读MagicNumber，如果符合MyEXT2的MagicNumber，就认为是已经有内容，反之则进行初始化
     if (sb->magic_num != MAGIC_NUM) //不符合的话，进行初始化
@@ -86,7 +86,7 @@ int init_file_system()
     //根目录dir_item初始化
     root_dir_item = init_dir_item(TYPE_DIR, 0, "/");
     //目录栈初始化
-    path_stack.top = -1;
+    path_stack.number = -1;
     push(root_dir_item);
     //初始时应该进入根目录
     ls_cmd("/");

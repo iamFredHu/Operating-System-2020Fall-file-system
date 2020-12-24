@@ -26,12 +26,9 @@ dir_item *init_dir_item(uint8_t type, uint32_t inode_id, char *name)
     return init_dir_item_dir_item;
 }
 
-//根据所给的dir_item和dir_node，将其写入数据块中
+//根据所给的dir_item和dir_node，将其写入磁盘块中
 int write_dir_item(struct inode *dir_node, struct dir_item *dir_item)
 {
-    //类型如果是FILE则报错
-    if (dir_node->file_type == TYPE_FILE)
-        return -1;
     //根据size可以算出inode中的数据块指针id和偏移量
     int block_point_index = dir_node->size / 1024;
     int block_offset = dir_node->size % 1024;
@@ -49,9 +46,9 @@ int write_dir_item(struct inode *dir_node, struct dir_item *dir_item)
     {
         block_id = dir_node->block_point[block_point_index];
     }
-    //把内容写入数据块
-    write_block(block_id, (char *)dir_item, 128, block_offset);
-    //文件大小  //TODO 看看要不要改
+    //把内容写入磁盘块
+    write_data_block(block_id, (char *)dir_item, 128, block_offset);
+    //写入之后要记得修改文件尺寸
     dir_node->size = dir_node->size + 128;
     return 0;
 }
@@ -59,92 +56,85 @@ int write_dir_item(struct inode *dir_node, struct dir_item *dir_item)
 //根据文件夹inode读dir_item
 dir_item *read_dir_item(inode *dir_node, int block_point_index, int offset_index)
 {
-    char *read_dir_item_buf = read_block(dir_node->block_point[block_point_index]);
+    char *read_dir_item_buf = read_data_block(dir_node->block_point[block_point_index]);
     return (dir_item *)(read_dir_item_buf + offset_index * 128);
 }
 
-/**
- * 
- * 在制定inode下寻找dir_item，仅需名字即可
- * 
- * footprint：代表需不需要输出查找过程
- */
 //根据dir_name在inode下查找dir_item
-dir_item *search_dir_item_in_inode_by_name(inode *dir_inode, char *dir_name, int *blk_index, int *blk_off, int footprint)
+dir_item *search_dir_item_in_inode_by_name(inode *dir_inode_be_searched, char *dir_name, int *block_id, int *block_offset, int list_flag)
 {
-    int total_dir_item = dir_inode->size / 128;
-    *blk_off = 0;
+    //根据被查找的inode尺寸，算出dir_item的数量
+    int dir_item_amount = dir_inode_be_searched->size / 128;
+    *block_offset = 0;
     for (int i = 0; i < 6; i++)
     {
-        if (dir_inode->block_point[i] != 0)
+        if (dir_inode_be_searched->block_point[i] != 0)
         {
-            total_dir_item -= 8;
-            int dir_item_per_blk = total_dir_item >= 0 ? 8 : total_dir_item + 8;
-            int is_last = total_dir_item < 0 ? 1 : 0;
-            for (int j = 0; j < dir_item_per_blk; j++)
+            //每一个数据块的大小是1024B dir_item的大小是128B，因此每查看一个block_point,dir_item_amount就减少8
+            dir_item_amount = dir_item_amount - 8;
+            //int dir_item_per_block = dir_item_amount >= 0 ? 8 : dir_item_amount + 8;
+            int dir_item_per_block;
+            int flag_last_item;
+            //如果剩余的dir_item >0,说明不是最后一项
+            if (dir_item_amount >= 0)
             {
-                dir_item *dir_item = read_dir_item(dir_inode, i, j);
-                if (dir_item->valid && footprint)
+                dir_item_per_block = 8;
+                flag_last_item = 0;
+            }
+            else
+            {
+                dir_item_per_block = dir_item_amount + 8;
+                flag_last_item = 1;
+            }
+
+            //int flag_last_item = dir_item_amount < 0 ? 1 : 0;
+            for (int j = 0; j < dir_item_per_block; j++)
+            {
+                //根据inode找dir_item
+                dir_item *dir_item = read_dir_item(dir_inode_be_searched, i, j);
+                //在执行ls命令时需要列出所有项，就用这个printf实现
+                if (dir_item->valid && list_flag)
                 {
-                    printf("%s %s\n", dir_item->type == TYPE_FILE ? "FILE" : "DIR",dir_item->name);
+                    printf("%s %s\n", dir_item->type == TYPE_FILE ? "FILE" : "DIR", dir_item->name);
                 }
+                //遍历，如果名字相同就返回，同时记录block_id和offset
                 if (strcmp(dir_item->name, dir_name) == 0)
                 {
-                    *blk_index = i;
-                    *blk_off = j * 128;
+                    *block_id = i;
+                    *block_offset = j * 128;
                     return dir_item;
                 }
             }
-            *blk_off += dir_item_per_blk * 128;
-            if (is_last)
+            *block_offset += dir_item_per_block * 128;
+            //如果已经是最后一项了，就记录为1
+            if (flag_last_item)
             {
-                *blk_index = i;
+                *block_id = i;
             }
         }
     }
-    return (struct dir_item *)0;
+    return 0;
 }
 
-/**
- * 根据path，找到相应的dir_item
- * ../adadad/adad
- * ./adad/ad
- * addd/add
- * 
- * /dad/ad
- * 
- * path: 路径
- * dir_name：如果没有
- * current_dir_item:用于返回找到的dir_item
- * last_dir_item：用于返回dir_item的上一级dir_item
- * is_follow：是否跟踪路径
- * 
- * return：
- * 没有找到返回-1，否则返回0
- */
-int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **current_dir_item, struct dir_item **up_dir_item, int is_follow)
+// 根据path，找dir_item path->dir_name->inode->调用上面的函数找dir_item
+// current_dir_item:用于返回找到的dir_item
+// last_dir_item：用于返回dir_item的上一级dir_item
+// 没有找到返回-1，找到返回0
+
+int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **current_dir_item, struct dir_item **up_dir_item)
 {
+    //如果是根目录，直接已经找到
     if (strcmp(path, "/") == 0)
     {
-        /* / */
         *current_dir_item = root_dir_item;
         *up_dir_item = root_dir_item;
         *dir_name = "/";
-        if (is_follow)
-        {
-            path_stack.top = -1;
-            push(root_dir_item);
-        }
         return 0;
     }
+    //如果path第一个是/，则进入到根目录
     else if (path[0] == '/')
     {
         *current_dir_item = root_dir_item;
-        if (is_follow)
-        {
-            path_stack.top = -1;
-            push(root_dir_item);
-        }
     }
     else
     {
@@ -152,36 +142,37 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
         *current_dir_item = top(0);
     }
 
-    while (*dir_name = peek_path(&path))
+    while ((*dir_name = watch_path(&path)) != NULL)
     {
         if (strlen(*dir_name) == 0)
         {
             break;
         }
-        int blk_index = 0;
-        int block_off = 0;
-        struct inode *current_dir_node = read_inode((*current_dir_item)->inode_id);
+        int block_index = 0;
+        int block_offset = 0;
+
+        inode *current_dir_node = read_inode((*current_dir_item)->inode_id);
+
         if (current_dir_node->file_type == TYPE_FILE)
         {
             printf("ERROR INFO: %s is not a dir!\n", (*current_dir_item)->name);
             return -1;
         }
-        struct dir_item *next_dir_item =
-            search_dir_item_in_inode_by_name(current_dir_node, *dir_name, &blk_index, &block_off, 0);
+
+        dir_item *next_dir_item = search_dir_item_in_inode_by_name(current_dir_node, *dir_name, &block_index, &block_offset, 0);
+
         if (!next_dir_item)
         {
-            //printf("ERROR INFO: The dir does not exist!\n", *dir_name);
             return -1;
         }
+
         *up_dir_item = *current_dir_item;
         *current_dir_item = next_dir_item;
+        //如果类型为FILE，说明已经到了最后一层，即已经找到
         if (next_dir_item->type == TYPE_FILE)
         {
-            //printf("find_inode() %s is a file , stop here!\n", *dir_name);
             return 0;
         }
-        if (is_follow)
-            push(next_dir_item);
     }
     return 0;
 }

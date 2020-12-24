@@ -75,20 +75,16 @@ uint32_t write_inode(struct inode *inode)
     //分配inode
     alloc_inode(free_inode_index);
     //写入磁盘
-    write_block(block_id, (char *)inode, 32, bit_index * 32);
+    write_data_block(block_id, (char *)inode, 32, bit_index * 32);
     return free_inode_index;
 }
 
-/**
- * 
- * inode_num：要更新的inode编号
- * update_inode：要更新的inode
- */
+//更新inode
 int update_inode(uint32_t inode_id, struct inode *update_inode)
 {
     int block_id = inode_id / 32 + 1; //第几个数据块
     int bit_index = inode_id % 32;    //数据块内偏移
-    write_block(block_id, (char *)update_inode, 32, bit_index * 32);
+    write_data_block(block_id, (char *)update_inode, 32, bit_index * 32);
 }
 
 //根据inode_id,返回相应的inode地址
@@ -102,7 +98,7 @@ inode *read_inode(uint32_t inode_id)
     //根据数据块id读数据块，然后再把读到的buf强转为inode
     char *read_inode_buf;
     inode *read_inode_node;
-    read_inode_buf = read_block(block_id);
+    read_inode_buf = read_data_block(block_id);
     //注意加上偏移量
     read_inode_node = (inode *)(read_inode_buf + bit_index * 32);
 

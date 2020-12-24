@@ -7,6 +7,9 @@
         "string_view": "c",
         "functional": "c",
         "istream": "c",
-        "streambuf": "c"
+        "streambuf": "c",
+        "exception": "cpp",
+        "random": "c",
+        "iosfwd": "c"
     }
 }
