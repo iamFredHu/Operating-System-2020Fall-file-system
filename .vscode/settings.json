@@ -1,4 +1,12 @@
 {
     "cmake.configureOnOpen": true,
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "files.associations": {
+        "*.tcc": "c",
+        "cstdio": "c",
+        "string_view": "c",
+        "functional": "c",
+        "istream": "c",
+        "streambuf": "c"
+    }
 }

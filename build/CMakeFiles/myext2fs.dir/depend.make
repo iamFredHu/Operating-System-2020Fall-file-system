@@ -9,7 +9,6 @@ CMakeFiles/myext2fs.dir/block.c.o: ../disk.h
 CMakeFiles/myext2fs.dir/block.c.o: ../init_fs.h
 CMakeFiles/myext2fs.dir/block.c.o: ../inode.h
 CMakeFiles/myext2fs.dir/block.c.o: ../path.h
-CMakeFiles/myext2fs.dir/block.c.o: ../utils.h
 
 CMakeFiles/myext2fs.dir/command.c.o: ../block.h
 CMakeFiles/myext2fs.dir/command.c.o: ../command.c
@@ -19,7 +18,6 @@ CMakeFiles/myext2fs.dir/command.c.o: ../disk.h
 CMakeFiles/myext2fs.dir/command.c.o: ../init_fs.h
 CMakeFiles/myext2fs.dir/command.c.o: ../inode.h
 CMakeFiles/myext2fs.dir/command.c.o: ../path.h
-CMakeFiles/myext2fs.dir/command.c.o: ../utils.h
 
 CMakeFiles/myext2fs.dir/dir_item.c.o: ../block.h
 CMakeFiles/myext2fs.dir/dir_item.c.o: ../command.h
@@ -29,7 +27,6 @@ CMakeFiles/myext2fs.dir/dir_item.c.o: ../disk.h
 CMakeFiles/myext2fs.dir/dir_item.c.o: ../init_fs.h
 CMakeFiles/myext2fs.dir/dir_item.c.o: ../inode.h
 CMakeFiles/myext2fs.dir/dir_item.c.o: ../path.h
-CMakeFiles/myext2fs.dir/dir_item.c.o: ../utils.h
 
 CMakeFiles/myext2fs.dir/disk.c.o: ../disk.c
 CMakeFiles/myext2fs.dir/disk.c.o: ../disk.h
@@ -42,7 +39,6 @@ CMakeFiles/myext2fs.dir/init_fs.c.o: ../init_fs.c
 CMakeFiles/myext2fs.dir/init_fs.c.o: ../init_fs.h
 CMakeFiles/myext2fs.dir/init_fs.c.o: ../inode.h
 CMakeFiles/myext2fs.dir/init_fs.c.o: ../path.h
-CMakeFiles/myext2fs.dir/init_fs.c.o: ../utils.h
 
 CMakeFiles/myext2fs.dir/inode.c.o: ../block.h
 CMakeFiles/myext2fs.dir/inode.c.o: ../command.h
@@ -52,7 +48,6 @@ CMakeFiles/myext2fs.dir/inode.c.o: ../init_fs.h
 CMakeFiles/myext2fs.dir/inode.c.o: ../inode.c
 CMakeFiles/myext2fs.dir/inode.c.o: ../inode.h
 CMakeFiles/myext2fs.dir/inode.c.o: ../path.h
-CMakeFiles/myext2fs.dir/inode.c.o: ../utils.h
 
 CMakeFiles/myext2fs.dir/path.c.o: ../block.h
 CMakeFiles/myext2fs.dir/path.c.o: ../command.h
@@ -62,7 +57,6 @@ CMakeFiles/myext2fs.dir/path.c.o: ../init_fs.h
 CMakeFiles/myext2fs.dir/path.c.o: ../inode.h
 CMakeFiles/myext2fs.dir/path.c.o: ../path.c
 CMakeFiles/myext2fs.dir/path.c.o: ../path.h
-CMakeFiles/myext2fs.dir/path.c.o: ../utils.h
 
 CMakeFiles/myext2fs.dir/shell.c.o: ../block.h
 CMakeFiles/myext2fs.dir/shell.c.o: ../command.h
@@ -72,15 +66,4 @@ CMakeFiles/myext2fs.dir/shell.c.o: ../init_fs.h
 CMakeFiles/myext2fs.dir/shell.c.o: ../inode.h
 CMakeFiles/myext2fs.dir/shell.c.o: ../path.h
 CMakeFiles/myext2fs.dir/shell.c.o: ../shell.c
-CMakeFiles/myext2fs.dir/shell.c.o: ../utils.h
-
-CMakeFiles/myext2fs.dir/utils.c.o: ../block.h
-CMakeFiles/myext2fs.dir/utils.c.o: ../command.h
-CMakeFiles/myext2fs.dir/utils.c.o: ../dir_item.h
-CMakeFiles/myext2fs.dir/utils.c.o: ../disk.h
-CMakeFiles/myext2fs.dir/utils.c.o: ../init_fs.h
-CMakeFiles/myext2fs.dir/utils.c.o: ../inode.h
-CMakeFiles/myext2fs.dir/utils.c.o: ../path.h
-CMakeFiles/myext2fs.dir/utils.c.o: ../utils.c
-CMakeFiles/myext2fs.dir/utils.c.o: ../utils.h
 

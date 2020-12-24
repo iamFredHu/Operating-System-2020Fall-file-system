@@ -2,7 +2,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/myext2fs.dir/shell.c.o"
   "CMakeFiles/myext2fs.dir/init_fs.c.o"
   "CMakeFiles/myext2fs.dir/inode.c.o"
-  "CMakeFiles/myext2fs.dir/utils.c.o"
   "CMakeFiles/myext2fs.dir/disk.c.o"
   "CMakeFiles/myext2fs.dir/command.c.o"
   "CMakeFiles/myext2fs.dir/dir_item.c.o"

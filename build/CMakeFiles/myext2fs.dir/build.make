@@ -96,22 +96,9 @@ CMakeFiles/myext2fs.dir/inode.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/myext2fs.dir/inode.c.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
-CMakeFiles/myext2fs.dir/utils.c.o: CMakeFiles/myext2fs.dir/flags.make
-CMakeFiles/myext2fs.dir/utils.c.o: ../utils.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/myext2fs.dir/utils.c.o"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/utils.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/utils.c
-
-CMakeFiles/myext2fs.dir/utils.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/myext2fs.dir/utils.c.i"
-	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
-
-CMakeFiles/myext2fs.dir/utils.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/myext2fs.dir/utils.c.s"
-	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
-
 CMakeFiles/myext2fs.dir/disk.c.o: CMakeFiles/myext2fs.dir/flags.make
 CMakeFiles/myext2fs.dir/disk.c.o: ../disk.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/myext2fs.dir/disk.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/myext2fs.dir/disk.c.o"
 	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/disk.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/disk.c
 
 CMakeFiles/myext2fs.dir/disk.c.i: cmake_force
@@ -124,7 +111,7 @@ CMakeFiles/myext2fs.dir/disk.c.s: cmake_force
 
 CMakeFiles/myext2fs.dir/command.c.o: CMakeFiles/myext2fs.dir/flags.make
 CMakeFiles/myext2fs.dir/command.c.o: ../command.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/myext2fs.dir/command.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/myext2fs.dir/command.c.o"
 	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/command.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/command.c
 
 CMakeFiles/myext2fs.dir/command.c.i: cmake_force
@@ -137,7 +124,7 @@ CMakeFiles/myext2fs.dir/command.c.s: cmake_force
 
 CMakeFiles/myext2fs.dir/dir_item.c.o: CMakeFiles/myext2fs.dir/flags.make
 CMakeFiles/myext2fs.dir/dir_item.c.o: ../dir_item.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/myext2fs.dir/dir_item.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/myext2fs.dir/dir_item.c.o"
 	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/dir_item.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/dir_item.c
 
 CMakeFiles/myext2fs.dir/dir_item.c.i: cmake_force
@@ -150,7 +137,7 @@ CMakeFiles/myext2fs.dir/dir_item.c.s: cmake_force
 
 CMakeFiles/myext2fs.dir/block.c.o: CMakeFiles/myext2fs.dir/flags.make
 CMakeFiles/myext2fs.dir/block.c.o: ../block.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/myext2fs.dir/block.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/myext2fs.dir/block.c.o"
 	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/block.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/block.c
 
 CMakeFiles/myext2fs.dir/block.c.i: cmake_force
@@ -163,7 +150,7 @@ CMakeFiles/myext2fs.dir/block.c.s: cmake_force
 
 CMakeFiles/myext2fs.dir/path.c.o: CMakeFiles/myext2fs.dir/flags.make
 CMakeFiles/myext2fs.dir/path.c.o: ../path.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/myext2fs.dir/path.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/myext2fs.dir/path.c.o"
 	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/path.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/path.c
 
 CMakeFiles/myext2fs.dir/path.c.i: cmake_force
@@ -179,7 +166,6 @@ myext2fs_OBJECTS = \
 "CMakeFiles/myext2fs.dir/shell.c.o" \
 "CMakeFiles/myext2fs.dir/init_fs.c.o" \
 "CMakeFiles/myext2fs.dir/inode.c.o" \
-"CMakeFiles/myext2fs.dir/utils.c.o" \
 "CMakeFiles/myext2fs.dir/disk.c.o" \
 "CMakeFiles/myext2fs.dir/command.c.o" \
 "CMakeFiles/myext2fs.dir/dir_item.c.o" \
@@ -192,7 +178,6 @@ myext2fs_EXTERNAL_OBJECTS =
 myext2fs: CMakeFiles/myext2fs.dir/shell.c.o
 myext2fs: CMakeFiles/myext2fs.dir/init_fs.c.o
 myext2fs: CMakeFiles/myext2fs.dir/inode.c.o
-myext2fs: CMakeFiles/myext2fs.dir/utils.c.o
 myext2fs: CMakeFiles/myext2fs.dir/disk.c.o
 myext2fs: CMakeFiles/myext2fs.dir/command.c.o
 myext2fs: CMakeFiles/myext2fs.dir/dir_item.c.o
@@ -200,7 +185,7 @@ myext2fs: CMakeFiles/myext2fs.dir/block.c.o
 myext2fs: CMakeFiles/myext2fs.dir/path.c.o
 myext2fs: CMakeFiles/myext2fs.dir/build.make
 myext2fs: CMakeFiles/myext2fs.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking C executable myext2fs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking C executable myext2fs"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/myext2fs.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

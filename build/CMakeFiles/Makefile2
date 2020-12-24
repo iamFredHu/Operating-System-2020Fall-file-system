@@ -65,39 +65,39 @@ CMAKE_SOURCE_DIR = /home/180110505/Operating-System-2020Fall-file-system
 CMAKE_BINARY_DIR = /home/180110505/Operating-System-2020Fall-file-system/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/myext2fs.dir
+# Target rules for target CMakeFiles/MyExt2FS.dir
 
 # All Build rule for target.
-CMakeFiles/myext2fs.dir/all:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/depend
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target myext2fs"
-.PHONY : CMakeFiles/myext2fs.dir/all
+CMakeFiles/MyExt2FS.dir/all:
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/depend
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target MyExt2FS"
+.PHONY : CMakeFiles/MyExt2FS.dir/all
 
 # Include target in all.
-all: CMakeFiles/myext2fs.dir/all
+all: CMakeFiles/MyExt2FS.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/myext2fs.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles 10
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/myext2fs.dir/all
+CMakeFiles/MyExt2FS.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles 9
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/MyExt2FS.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles 0
-.PHONY : CMakeFiles/myext2fs.dir/rule
+.PHONY : CMakeFiles/MyExt2FS.dir/rule
 
 # Convenience name for target.
-myext2fs: CMakeFiles/myext2fs.dir/rule
+MyExt2FS: CMakeFiles/MyExt2FS.dir/rule
 
-.PHONY : myext2fs
-
-# clean rule for target.
-CMakeFiles/myext2fs.dir/clean:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/clean
-.PHONY : CMakeFiles/myext2fs.dir/clean
+.PHONY : MyExt2FS
 
 # clean rule for target.
-clean: CMakeFiles/myext2fs.dir/clean
+CMakeFiles/MyExt2FS.dir/clean:
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/clean
+.PHONY : CMakeFiles/MyExt2FS.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/MyExt2FS.dir/clean
 
 .PHONY : clean
 

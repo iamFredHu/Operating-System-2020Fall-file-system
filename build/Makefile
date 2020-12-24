@@ -144,17 +144,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named myext2fs
+# Target rules for targets named MyExt2FS
 
 # Build rule for target.
-myext2fs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 myext2fs
-.PHONY : myext2fs
+MyExt2FS: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MyExt2FS
+.PHONY : MyExt2FS
 
 # fast build rule for target.
-myext2fs/fast:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/build
-.PHONY : myext2fs/fast
+MyExt2FS/fast:
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/build
+.PHONY : MyExt2FS/fast
 
 #=============================================================================
 # Target rules for targets named ContinuousSubmit
@@ -526,7 +526,7 @@ block.o: block.c.o
 
 # target to build an object file
 block.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/block.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/block.c.o
 .PHONY : block.c.o
 
 block.i: block.c.i
@@ -535,7 +535,7 @@ block.i: block.c.i
 
 # target to preprocess a source file
 block.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/block.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/block.c.i
 .PHONY : block.c.i
 
 block.s: block.c.s
@@ -544,7 +544,7 @@ block.s: block.c.s
 
 # target to generate assembly for a file
 block.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/block.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/block.c.s
 .PHONY : block.c.s
 
 command.o: command.c.o
@@ -553,7 +553,7 @@ command.o: command.c.o
 
 # target to build an object file
 command.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/command.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/command.c.o
 .PHONY : command.c.o
 
 command.i: command.c.i
@@ -562,7 +562,7 @@ command.i: command.c.i
 
 # target to preprocess a source file
 command.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/command.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/command.c.i
 .PHONY : command.c.i
 
 command.s: command.c.s
@@ -571,7 +571,7 @@ command.s: command.c.s
 
 # target to generate assembly for a file
 command.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/command.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/command.c.s
 .PHONY : command.c.s
 
 dir_item.o: dir_item.c.o
@@ -580,7 +580,7 @@ dir_item.o: dir_item.c.o
 
 # target to build an object file
 dir_item.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/dir_item.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/dir_item.c.o
 .PHONY : dir_item.c.o
 
 dir_item.i: dir_item.c.i
@@ -589,7 +589,7 @@ dir_item.i: dir_item.c.i
 
 # target to preprocess a source file
 dir_item.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/dir_item.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/dir_item.c.i
 .PHONY : dir_item.c.i
 
 dir_item.s: dir_item.c.s
@@ -598,7 +598,7 @@ dir_item.s: dir_item.c.s
 
 # target to generate assembly for a file
 dir_item.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/dir_item.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/dir_item.c.s
 .PHONY : dir_item.c.s
 
 disk.o: disk.c.o
@@ -607,7 +607,7 @@ disk.o: disk.c.o
 
 # target to build an object file
 disk.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/disk.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/disk.c.o
 .PHONY : disk.c.o
 
 disk.i: disk.c.i
@@ -616,7 +616,7 @@ disk.i: disk.c.i
 
 # target to preprocess a source file
 disk.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/disk.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/disk.c.i
 .PHONY : disk.c.i
 
 disk.s: disk.c.s
@@ -625,7 +625,7 @@ disk.s: disk.c.s
 
 # target to generate assembly for a file
 disk.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/disk.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/disk.c.s
 .PHONY : disk.c.s
 
 init_fs.o: init_fs.c.o
@@ -634,7 +634,7 @@ init_fs.o: init_fs.c.o
 
 # target to build an object file
 init_fs.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/init_fs.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/init_fs.c.o
 .PHONY : init_fs.c.o
 
 init_fs.i: init_fs.c.i
@@ -643,7 +643,7 @@ init_fs.i: init_fs.c.i
 
 # target to preprocess a source file
 init_fs.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/init_fs.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/init_fs.c.i
 .PHONY : init_fs.c.i
 
 init_fs.s: init_fs.c.s
@@ -652,7 +652,7 @@ init_fs.s: init_fs.c.s
 
 # target to generate assembly for a file
 init_fs.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/init_fs.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/init_fs.c.s
 .PHONY : init_fs.c.s
 
 inode.o: inode.c.o
@@ -661,7 +661,7 @@ inode.o: inode.c.o
 
 # target to build an object file
 inode.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/inode.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/inode.c.o
 .PHONY : inode.c.o
 
 inode.i: inode.c.i
@@ -670,7 +670,7 @@ inode.i: inode.c.i
 
 # target to preprocess a source file
 inode.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/inode.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/inode.c.i
 .PHONY : inode.c.i
 
 inode.s: inode.c.s
@@ -679,7 +679,7 @@ inode.s: inode.c.s
 
 # target to generate assembly for a file
 inode.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/inode.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/inode.c.s
 .PHONY : inode.c.s
 
 path.o: path.c.o
@@ -688,7 +688,7 @@ path.o: path.c.o
 
 # target to build an object file
 path.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/path.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/path.c.o
 .PHONY : path.c.o
 
 path.i: path.c.i
@@ -697,7 +697,7 @@ path.i: path.c.i
 
 # target to preprocess a source file
 path.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/path.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/path.c.i
 .PHONY : path.c.i
 
 path.s: path.c.s
@@ -706,7 +706,7 @@ path.s: path.c.s
 
 # target to generate assembly for a file
 path.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/path.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/path.c.s
 .PHONY : path.c.s
 
 shell.o: shell.c.o
@@ -715,7 +715,7 @@ shell.o: shell.c.o
 
 # target to build an object file
 shell.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/shell.c.o
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/shell.c.o
 .PHONY : shell.c.o
 
 shell.i: shell.c.i
@@ -724,7 +724,7 @@ shell.i: shell.c.i
 
 # target to preprocess a source file
 shell.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/shell.c.i
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/shell.c.i
 .PHONY : shell.c.i
 
 shell.s: shell.c.s
@@ -733,35 +733,8 @@ shell.s: shell.c.s
 
 # target to generate assembly for a file
 shell.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/shell.c.s
+	$(MAKE) -f CMakeFiles/MyExt2FS.dir/build.make CMakeFiles/MyExt2FS.dir/shell.c.s
 .PHONY : shell.c.s
-
-utils.o: utils.c.o
-
-.PHONY : utils.o
-
-# target to build an object file
-utils.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/utils.c.o
-.PHONY : utils.c.o
-
-utils.i: utils.c.i
-
-.PHONY : utils.i
-
-# target to preprocess a source file
-utils.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/utils.c.i
-.PHONY : utils.c.i
-
-utils.s: utils.c.s
-
-.PHONY : utils.s
-
-# target to generate assembly for a file
-utils.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/utils.c.s
-.PHONY : utils.c.s
 
 # Help Target
 help:
@@ -772,7 +745,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... package"
-	@echo "... myext2fs"
+	@echo "... MyExt2FS"
 	@echo "... ContinuousSubmit"
 	@echo "... ContinuousMemCheck"
 	@echo "... ContinuousConfigure"
@@ -827,9 +800,6 @@ help:
 	@echo "... shell.o"
 	@echo "... shell.i"
 	@echo "... shell.s"
-	@echo "... utils.o"
-	@echo "... utils.i"
-	@echo "... utils.s"
 .PHONY : help
 
 

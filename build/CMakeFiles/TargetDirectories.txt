@@ -1,7 +1,7 @@
 /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/rebuild_cache.dir
 /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/test.dir
 /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/package.dir
-/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/myext2fs.dir
+/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/MyExt2FS.dir
 /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/ContinuousSubmit.dir
 /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/ContinuousMemCheck.dir
 /home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/ContinuousConfigure.dir

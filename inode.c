@@ -8,7 +8,6 @@
 #include "disk.h"
 #include "inode.h"
 #include "init_fs.h"
-#include "utils.h"
 #include "dir_item.h"
 #include "block.h"
 #include "path.h"
@@ -85,7 +84,7 @@ uint32_t write_inode(struct inode *inode)
  * inode_num：要更新的inode编号
  * update_inode：要更新的inode
  */
-int sync_inode(uint32_t inode_id, struct inode *update_inode)
+int update_inode(uint32_t inode_id, struct inode *update_inode)
 {
     int block_id = inode_id / 32 + 1; //第几个数据块
     int bit_index = inode_id % 32;    //数据块内偏移

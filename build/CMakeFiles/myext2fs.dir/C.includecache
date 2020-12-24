@@ -8,11 +8,7 @@
 
 /home/180110505/Operating-System-2020Fall-file-system/block.h
 
-/home/180110505/Operating-System-2020Fall-file-system/command.h
-init_fs.h
-/home/180110505/Operating-System-2020Fall-file-system/init_fs.h
-
-/home/180110505/Operating-System-2020Fall-file-system/dir_item.c
+/home/180110505/Operating-System-2020Fall-file-system/command.c
 stdio.h
 -
 unistd.h
@@ -20,8 +16,6 @@ unistd.h
 stdlib.h
 -
 string.h
--
-stdint.h
 -
 command.h
 /home/180110505/Operating-System-2020Fall-file-system/command.h
@@ -31,8 +25,6 @@ inode.h
 /home/180110505/Operating-System-2020Fall-file-system/inode.h
 init_fs.h
 /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
-utils.h
-/home/180110505/Operating-System-2020Fall-file-system/utils.h
 dir_item.h
 /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
 block.h
@@ -40,39 +32,15 @@ block.h
 path.h
 /home/180110505/Operating-System-2020Fall-file-system/path.h
 
-/home/180110505/Operating-System-2020Fall-file-system/dir_item.h
-init_fs.h
-/home/180110505/Operating-System-2020Fall-file-system/init_fs.h
-
-/home/180110505/Operating-System-2020Fall-file-system/disk.h
-
-/home/180110505/Operating-System-2020Fall-file-system/init_fs.c
-stdio.h
--
-unistd.h
--
-stdlib.h
--
-string.h
--
-stdint.h
--
-command.h
 /home/180110505/Operating-System-2020Fall-file-system/command.h
-disk.h
-/home/180110505/Operating-System-2020Fall-file-system/disk.h
-inode.h
-/home/180110505/Operating-System-2020Fall-file-system/inode.h
 init_fs.h
 /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
-utils.h
-/home/180110505/Operating-System-2020Fall-file-system/utils.h
-dir_item.h
+
 /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
-block.h
-/home/180110505/Operating-System-2020Fall-file-system/block.h
-path.h
-/home/180110505/Operating-System-2020Fall-file-system/path.h
+init_fs.h
+/home/180110505/Operating-System-2020Fall-file-system/init_fs.h
+
+/home/180110505/Operating-System-2020Fall-file-system/disk.h
 
 /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
 stdint.h
@@ -85,6 +53,4 @@ init_fs.h
 /home/180110505/Operating-System-2020Fall-file-system/path.h
 init_fs.h
 /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
-
-/home/180110505/Operating-System-2020Fall-file-system/utils.h
 

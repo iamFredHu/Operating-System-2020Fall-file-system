@@ -7,7 +7,6 @@
 #include "disk.h"
 #include "inode.h"
 #include "init_fs.h"
-#include "utils.h"
 #include "dir_item.h"
 #include "block.h"
 #include "path.h"
@@ -123,6 +122,28 @@ void analyse_command(char *input_command, int input_len)
     }
 }
 
+//获取键盘输入流 max指buf数组大小
+int get_cmd(char *buf, int max)
+{
+    int index = 0;
+    char input_char;
+
+    for (; index < max - 1;)
+    {
+        input_char = getchar();
+        //EOF End of file
+        if (input_char < 0)
+            break;
+        //换行符和回车符
+        if (input_char == '\n' || input_char == '\r')
+            break;
+        buf[index++] = input_char;
+    }
+    //buf末尾
+    buf[index] = '\0';
+    return strlen(buf);
+}
+
 int main(void)
 {
     printf("Welcome to my file system!\n");
@@ -135,14 +156,14 @@ int main(void)
     {
         printf("==>");
         memset(command, 0, 512);
-        int input_command_len = gets(command, 512);
+        int input_command_len = get_cmd(command, 512);
 
         //注意如果没有输入内容，应该要求用户再次进行输入
         while (input_command_len == 0)
         {
             printf("ERROR INFO: Please input your command!\n");
             printf("==>");
-            input_command_len = gets(command, 512);
+            input_command_len = get_cmd(command, 512);
         }
         //对command_path进行初始化
         for (int i = 0; i < 20; i++)

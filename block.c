@@ -8,7 +8,6 @@
 #include "disk.h"
 #include "inode.h"
 #include "init_fs.h"
-#include "utils.h"
 #include "dir_item.h"
 #include "block.h"
 #include "path.h"
