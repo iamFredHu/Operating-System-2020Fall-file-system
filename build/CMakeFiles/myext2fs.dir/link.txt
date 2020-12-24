@@ -1,0 +1,1 @@
+/bin/gcc-8    CMakeFiles/myext2fs.dir/shell.c.o CMakeFiles/myext2fs.dir/file_system.c.o CMakeFiles/myext2fs.dir/inode.c.o CMakeFiles/myext2fs.dir/utils.c.o CMakeFiles/myext2fs.dir/disk.c.o CMakeFiles/myext2fs.dir/command.c.o CMakeFiles/myext2fs.dir/dir_item.c.o CMakeFiles/myext2fs.dir/block.c.o  -o myext2fs 

@@ -54,14 +54,9 @@ dir_item *root_dir_item;
 //路径栈
 path_stack_t path_stack;
 
-void ls_cmd(char *path);
-inode *mkdir_cmd(char *path);
-struct inode *touch_cmd(char *path);
-int cp_cmd(char *from_path, char *to_path);
-void shutdown_cmd();
+dir_item *top(int n);
+dir_item *pop();
+int push(struct dir_item *dir_item);
 int init_file_system();
-void sync_super_blk();
-int write_block(uint32_t block_num, char *buf, int sz, int offset);
-char *read_block(uint32_t block_num);
 
 #endif
