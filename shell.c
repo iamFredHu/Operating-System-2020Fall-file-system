@@ -141,7 +141,7 @@ void analyse_command(char *input_command, int input_len)
     }
     else if (command_type == 4)
     {
-        copy_to(command_path[0], command_path[1]);
+        cp_cmd(command_path[0], command_path[1]);
     }
     else if (command_type == 5)
     {

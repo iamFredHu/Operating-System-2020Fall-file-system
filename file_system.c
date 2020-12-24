@@ -138,13 +138,13 @@ uint32_t write_inode(struct inode *inode)
     //首先找到空闲的inode
     uint32_t free_inode_index = get_free_inode();
     //数据块id //TODO 为什么要+1
-    int block_number = free_inode_index / 32 + 1;
+    int block_id = free_inode_index / 32 + 1;
     //位图比特id
     int bit_index = free_inode_index % 32;
-    //分配inode     
+    //分配inode
     alloc_inode(free_inode_index);
     //写入磁盘
-    write_block(block_number, (char *)inode, 32, bit_index * 32);
+    write_block(block_id, (char *)inode, 32, bit_index * 32);
     return free_inode_index;
 }
 
@@ -153,75 +153,67 @@ uint32_t write_inode(struct inode *inode)
  * inode_num：要更新的inode编号
  * update_inode：要更新的inode
  */
-int sync_inode(uint32_t inode_number, struct inode *update_inode)
+int sync_inode(uint32_t inode_id, struct inode *update_inode)
 {
-    int block_num = inode_number / NINODE_PER_BLK + 1; //第几个数据块
-    int off_index = inode_number % NINODE_PER_BLK;     //数据块内偏移
-    write_block(block_num, (char *)update_inode, INODESZ, off_index * INODESZ);
+    int block_id = inode_id / NINODE_PER_BLK + 1; //第几个数据块
+    int bit_index = inode_id % NINODE_PER_BLK;    //数据块内偏移
+    write_block(block_id, (char *)update_inode, INODESZ, bit_index * INODESZ);
 }
 
-struct inode *read_inode(uint32_t inode_number)
+//根据inode_id,返回相应的inode地址
+inode *read_inode(uint32_t inode_id)
 {
-    int block_num = inode_number / NINODE_PER_BLK + 1; //第几个数据块
-    int off_index = inode_number % NINODE_PER_BLK;     //数据块内偏移
-    char *buf;
-    //memset(buf, 0, DEVICE_BLOCK_SIZE);
-    struct inode *inode;
-    buf = read_block(block_num);
-    inode = (struct inode *)(buf + off_index * INODESZ);
-    /* 一个盘块只能装16个512B 32B */
-    return inode;
+    //数据块id 需要注意第一个数据块id被超级块占用，所以需要—+1
+    int block_id = (inode_id / 32) + 1;
+    //数据块内偏移量，一个inode占用大小为32B，一个数据块大小为512B
+    int bit_index = inode_id % 32;
+
+    //根据数据块id读数据块，然后再把读到的buf强转为inode
+    char *read_inode_buf;
+    inode *read_inode_node;
+    read_inode_buf = read_block(block_id);
+    //注意加上偏移量
+    read_inode_node = (inode *)(read_inode_buf + bit_index * 32);
+
+    return read_inode_node;
 }
 
-/* 分配一个数据块 */
-void alloc_block(uint32_t block_num)
+//数据块的分配
+void alloc_block(uint32_t block_id)
 {
-    int index = block_num / 32;
-    int32_t off = block_num % 32;
-    uint32_t mask = 1 << off;
-    sb->block_map[index] |= mask;
+    sb->block_map[block_id / 32] = sb->block_map[block_id / 32] | (1 << block_id % 32);
+    //每分配一次，空闲的数据块数量减少一个
     sb->free_block_count--;
+    //写入磁盘，注意超级块占两个块
     disk_write_block(0, (char *)sb);
     disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
 }
 
-/* 释放一个数据块 */
-void rlease_block(uint32_t block_num)
+//根据block_id从磁盘中读对应的块
+char *read_block(uint32_t block_id)
 {
-    int index = block_num / 32;
-    int32_t off = block_num % 32;
-    uint32_t mask = 1 << off;
-    sb->block_map[index] &= ~mask;
-    sb->free_block_count++;
+    //设置一个临时的buf，分配内存空间并赋初值0
+    char *read_block_buf = (char *)malloc(1024);
+    memset(read_block_buf, 0, 1024);
+    //注意DEVICE_BLOCK_SIZE为512B 而数据块的大小为1024B,是两倍的关系
+    disk_read_block(block_id * 2, read_block_buf);
+    disk_read_block(block_id * 2 + 1, read_block_buf + DEVICE_BLOCK_SIZE);
+    return read_block_buf;
+}
+
+//写数据块
+int write_block(uint32_t block_id, char *buf, int size, int offset)
+{
+    //首先要进行数据块的分配
+    sb->block_map[block_id / 32] = sb->block_map[block_id / 32] | (1 << block_id % 32);
+    sb->free_block_count = sb->free_block_count - 1;
     disk_write_block(0, (char *)sb);
     disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
-}
 
-/* 数据块相关 */
-char *read_block(uint32_t block_num)
-{
-    char *buf = (char *)malloc(1024);
-    memset(buf, 0, 1024);
-    disk_read_block(block_num * 2, buf);
-    disk_read_block(block_num * 2 + 1, buf + DEVICE_BLOCK_SIZE);
-    return buf;
-}
-
-/**
- * offset 为字节偏移量
- */
-int write_block(uint32_t block_num, char *buf, int sz, int offset)
-{
-    if (offset + sz > 1024)
-    {
-        printf("write_block(): impossible");
-        return -1;
-    }
-    alloc_block(block_num);
-    char *old_buf = read_block(block_num);
-    memmove(old_buf + offset, buf, sz);
-    disk_write_block(block_num * 2, old_buf);
-    disk_write_block(block_num * 2 + 1, old_buf + DEVICE_BLOCK_SIZE);
+    char *write_block_buf = read_block(block_id);
+    memmove(write_block_buf + offset, buf, size);
+    disk_write_block(block_id * 2, write_block_buf);
+    disk_write_block(block_id * 2 + 1, write_block_buf + DEVICE_BLOCK_SIZE);
     return 0;
 }
 
@@ -238,22 +230,22 @@ int create_dir_item(struct inode *dir_node, struct dir_item *dir_item)
         printf("create_dir_item() can't alloc more data block \n");
         return -1;
     }
-    int block_num = 0;
+    int block_id = 0;
     if (dir_node->block_point[blk_index] == 0)
     {
-        block_num = search_free_block();
-        dir_node->block_point[blk_index] = block_num;
+        block_id = search_free_block();
+        dir_node->block_point[blk_index] = block_id;
     }
     else
     {
-        block_num = dir_node->block_point[blk_index];
+        block_id = dir_node->block_point[blk_index];
     }
-    write_block(block_num, (char *)dir_item, 128, blk_off);
+    write_block(block_id, (char *)dir_item, 128, blk_off);
     dir_node->size += 128;
     return 0;
 }
 
-struct dir_item *read_dir_item(struct inode *dir_node, int blk_index, int off_index)
+dir_item *read_dir_item(struct inode *dir_node, int blk_index, int off_index)
 {
     if (off_index >= 8)
     {
@@ -309,19 +301,6 @@ dir_item *search_dir_item_by_inode(struct inode *dir_inode, char *dir_name, int 
     return (struct dir_item *)0;
 }
 
-int sync_dir_item(struct inode *dir_node, struct dir_item *update_dir_item)
-{
-    int blk_index = 0;
-    int block_off = 0;
-    if (search_dir_item_by_inode(dir_node, update_dir_item->name, &blk_index, &block_off, 0))
-    {
-        write_block(dir_node->block_point[blk_index], (char *)update_dir_item,
-                    128, block_off);
-        return 0;
-    }
-    return -1;
-}
-
 /**
  * 根据path，找到相应的dir_item
  * ../adadad/adad
@@ -354,15 +333,15 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
         }
         return 0;
     }
-    if (path[0] == '.' && path[1] == '.')
-    {
-        /* ../awdawdawd/awdaw */
-        //get_last_dir_item()
-        *current_dir_item = top(1);
-        peek_path(&path);
-        if (is_follow && (memcmp(top(0)->name, "/", sizeof("/")) != 0))
-            pop();
-    }
+    //if (path[0] == '.' && path[1] == '.')
+    //{
+    /* ../awdawdawd/awdaw */
+    //get_last_dir_item()
+    //*current_dir_item = top(1);
+    //peek_path(&path);
+    //if (is_follow && (memcmp(top(0)->name, "/", sizeof("/")) != 0))
+    //pop();
+    //}
     else if (path[0] == '/')
     {
         /* /dawdawd/awdaw */
@@ -374,12 +353,12 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
         }
     }
     /* ./adad/adad */
-    else if (path[0] == '.')
-    {
-        peek_path(&path);
-        //get_current_dir_item
-        *current_dir_item = top(0);
-    }
+    //else if (path[0] == '.')
+    //{
+    //peek_path(&path);
+    //get_current_dir_item
+    //*current_dir_item = top(0);
+    //}
     /* asdad/adad */
     else
     {
@@ -497,10 +476,6 @@ inode *mkdir_cmd(char *path)
             printf("mkdir_cmd() can not create another root directory! \n");
             return (struct inode *)0;
         }
-        struct dir_item *current_dir_item = init_dir_item(TYPE_DIR, 0, ".");
-        struct dir_item *up_dir_item = init_dir_item(TYPE_DIR, 0, "..");
-        create_dir_item(dir_node, current_dir_item);
-        create_dir_item(dir_node, up_dir_item);
         write_inode(dir_node);
         disk_write_block(0, (char *)sb);
         disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
@@ -539,8 +514,7 @@ inode *mkdir_cmd(char *path)
             struct inode *down_inode = init_inode(TYPE_DIR);
             uint32_t inode_index = write_inode(down_inode);
             struct dir_item *dir_item = init_dir_item(TYPE_DIR, inode_index, dir_name);
-            create_dir_item(down_inode, init_dir_item(TYPE_DIR, dir_item->inode_id, "."));
-            create_dir_item(down_inode, init_dir_item(TYPE_DIR, current_dir_item->inode_id, ".."));
+
             sync_inode(dir_item->inode_id, down_inode);
             /* 刷新当前节点 */
             /**
@@ -558,17 +532,8 @@ inode *mkdir_cmd(char *path)
             return down_inode;
         }
     }
-
-    /** test read write inode : success */
-    /* struct inode *j;
-    j = read_inode(0);
-    printf("mkdir_cmd() dir_node.type: %d, link: %d \n", j->file_type, j->link);
-    j->file_type = TYPE_FILE;
-    write_inode(j);
-    j = read_inode(1);
-    printf("mkdir_cmd() dir_node.type: %d, link: %d \n", j->file_type, j->link); */
 }
-int copy_to(char *from_path, char *to_path)
+int cp_cmd(char *from_path, char *to_path)
 {
 
     struct dir_item *from_current_dir_item;
@@ -586,19 +551,19 @@ int copy_to(char *from_path, char *to_path)
 
     if (search_dir_item_by_path(from_path, &from_dir_name, &from_current_dir_item, &from_last_dir_item, 0) < 0)
     {
-        printf("copy_to() source file not exist!\n");
+        printf("cp_cmd() source file not exist!\n");
         return -1;
     }
     if (search_dir_item_by_path(to_path, &to_dir_name, &to_current_dir_item, &to_last_dir_item, 0) == 0)
     {
-        printf("copy_to() dest file exists!\n");
+        printf("cp_cmd() dest file exists!\n");
         return -1;
     }
     from_current_inode = read_inode(from_current_dir_item->inode_id);
     to_current_inode = touch_cmd(to_path);
     if (!to_current_inode)
     {
-        printf("copy_to() dest directory not exists!\n");
+        printf("cp_cmd() dest directory not exists!\n");
         return -1;
     }
     search_dir_item_by_path(to_path, &to_dir_name, &to_current_dir_item, &to_last_dir_item, 0);
@@ -607,42 +572,14 @@ int copy_to(char *from_path, char *to_path)
         uint32_t origin_block_num = from_current_inode->block_point[i];
         if (origin_block_num != 0)
         {
-            uint32_t block_num = search_free_block();
-            to_current_inode->block_point[i] = block_num;
+            uint32_t block_id = search_free_block();
+            to_current_inode->block_point[i] = block_id;
             char *buf = read_block(origin_block_num);
-            write_block(block_num, buf, 1024, 0);
+            write_block(block_id, buf, 1024, 0);
         }
     }
-    //sync_dir_item(to_current_dir_item,)
     sync_inode(to_current_dir_item->inode_id, to_current_inode);
     return 0;
-}
-
-//获取超级块信息
-void info_super_block(sp_block *sb)
-{
-    if (sb == NULL)
-    {
-        printf("Error:The Super Block is null.\n");
-        return;
-    }
-
-    int32_t *head = (int32_t *)sb;
-    printf(">>>>>>>>>>Super-Block-Information<<<<<<<<<<\n");
-
-    if (sb->magic_num == MAGIC_NUM)
-    {
-        printf("File System:MyEXT2\n");
-    }
-    else
-    {
-        printf("File System:UnKnown, Magic Number:%d\n", sb->magic_num);
-    }
-    printf("Free block count:%d\n", sb->free_block_count);
-    printf("Free inode count:%d\n", sb->free_inode_count);
-    printf("Dir inode count:%d\n", sb->dir_inode_count);
-
-    printf(">>>>>>>>>>Super-Block-Information<<<<<<<<<<\n");
 }
 
 //文件系统初始化

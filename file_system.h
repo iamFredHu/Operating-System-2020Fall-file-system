@@ -68,7 +68,7 @@ path_stack_t path_stack;
 void ls_cmd(char *path);
 inode *mkdir_cmd(char *path);
 struct inode *touch_cmd(char *path);
-int copy_to(char *from_path, char *to_path);
+int cp_cmd(char *from_path, char *to_path);
 void shutdown_cmd();
 int init_file_system();
 void sync_super_blk();
