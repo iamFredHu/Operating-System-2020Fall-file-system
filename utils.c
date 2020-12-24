@@ -76,7 +76,6 @@ get_file_name(char *path){
   char *name = (char *)malloc(name_len); 
   for (int i = 0; i < name_len; i++)
   {
-    /* code */
     name[i] = ps[i];
   }
   return name;

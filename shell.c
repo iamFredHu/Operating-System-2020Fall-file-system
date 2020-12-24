@@ -7,7 +7,7 @@
 //全局变量 用于存放指令类型
 int command_type = 0;
 //全局变量 用于存放路径 用一个二维数组表示
-char command_path[MAXARGS][MAXPATH];
+char command_path[20][256];
 
 /* 类型列表
  * 0 - 默认值/指令类型外指令
@@ -57,8 +57,6 @@ int divide_path(char **ps, char *es, int divide_position, char *divided_str)
 
 void analyse_command(char *input_command, int input_len)
 {
-    //调试信息，待删除
-    printf("analyse_command(): %s \n", input_command);
     int divide_position = 0;
     int index = 0;
     //记得每次进行分析的时候都要把command_type清零，刚开始写的时候没有清零导致一直报错
@@ -68,7 +66,7 @@ void analyse_command(char *input_command, int input_len)
     {
         index++;
         //cmd_type指从输入的cmd中分开得到的type类型指令（ls、mkdir等）
-        char *cmd_type = (char *)malloc(MAXPATH);
+        char *cmd_type = (char *)malloc(256);
         //用divide_path找到type和path分开的位置
         divide_position = divide_path(&input_command, input_command + input_len, divide_position, cmd_type);
         //只有第一个空格才属于type
@@ -102,7 +100,6 @@ void analyse_command(char *input_command, int input_len)
                 //左移，删除type，剩下的就只是path了
                 memmove(command_path[index - 2], cmd_type, strlen(cmd_type));
         }
-        printf("analyse_command(): get token: %s, length: %ld\n", cmd_type, strlen(cmd_type));
     }
 
     //接下来对command_type进行判断和跳转
@@ -112,7 +109,7 @@ void analyse_command(char *input_command, int input_len)
     }
     else if (command_type == 1)
     {
-        for (int i = 0; i < MAXARGS; i++)
+        for (int i = 0; i < 20; i++)
         {
             if (command_path[i][0] != 0)
                 ls_cmd(command_path[i]);
@@ -125,7 +122,7 @@ void analyse_command(char *input_command, int input_len)
     }
     else if (command_type == 2)
     {
-        for (int i = 0; i < MAXARGS; i++)
+        for (int i = 0; i < 20; i++)
         {
             if (command_path[i][0] != 0)
                 mkdir_cmd(command_path[i]);
@@ -133,7 +130,7 @@ void analyse_command(char *input_command, int input_len)
     }
     else if (command_type == 3)
     {
-        for (int i = 0; i < MAXARGS; i++)
+        for (int i = 0; i < 20; i++)
         {
             if (command_path[i][0] != 0)
                 touch_cmd(command_path[i]);
@@ -177,9 +174,9 @@ int main(void)
             input_command_len = gets(command, 512);
         }
         //对command_path进行初始化
-        for (int i = 0; i < MAXARGS; i++)
+        for (int i = 0; i < 20; i++)
         {
-            memset(command_path, 0, MAXPATH);
+            memset(command_path, 0, 256);
         }
         //对命令进行分析
         analyse_command(command, input_command_len);

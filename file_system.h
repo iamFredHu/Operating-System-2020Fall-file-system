@@ -3,18 +3,7 @@
 
 #include <stdint.h>
 
-#define MAXPATH 256
-#define MAXCMD (MAXPATH + MAXPATH + 10)
-#define MAXARGS 20
-
 #define MAGIC_NUM 0xdec0de
-#define DATABLKSZ 1024
-#define INODESZ 32
-#define DIRITEMSZ 128
-#define SUPERBLKLOC 0
-
-#define NINODE_PER_BLK 32
-#define NDIRITEM_PER_BLK 8
 
 #define TYPE_FILE 0
 #define TYPE_DIR 1
@@ -51,7 +40,7 @@ typedef struct dir_item
 /* 路径栈 */
 typedef struct path_stack_t
 {
-    struct dir_item stack[MAXARGS];
+    struct dir_item stack[20];
     int top;
 } path_stack_t;
 

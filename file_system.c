@@ -155,9 +155,9 @@ uint32_t write_inode(struct inode *inode)
  */
 int sync_inode(uint32_t inode_id, struct inode *update_inode)
 {
-    int block_id = inode_id / NINODE_PER_BLK + 1; //第几个数据块
-    int bit_index = inode_id % NINODE_PER_BLK;    //数据块内偏移
-    write_block(block_id, (char *)update_inode, INODESZ, bit_index * INODESZ);
+    int block_id = inode_id / 32 + 1; //第几个数据块
+    int bit_index = inode_id % 32;    //数据块内偏移
+    write_block(block_id, (char *)update_inode, 32, bit_index * 32);
 }
 
 //根据inode_id,返回相应的inode地址
@@ -217,43 +217,41 @@ int write_block(uint32_t block_id, char *buf, int size, int offset)
     return 0;
 }
 
-/* dir_item相关 */
-int create_dir_item(struct inode *dir_node, struct dir_item *dir_item)
+//根据所给的dir_item和dir_node，将其写入数据块中
+int write_dir_item(struct inode *dir_node, struct dir_item *dir_item)
 {
+    //类型如果是FILE则报错
     if (dir_node->file_type == TYPE_FILE)
         return -1;
-    int sz = dir_node->size;
-    int blk_index = sz / 1024;
-    int blk_off = sz % 1024;
-    if (blk_index > 6)
-    {
-        printf("create_dir_item() can't alloc more data block \n");
-        return -1;
-    }
+    //根据size可以算出inode中的数据块指针id和偏移量
+    int block_point_index = dir_node->size / 1024;
+    int block_offset = dir_node->size % 1024;
+
     int block_id = 0;
-    if (dir_node->block_point[blk_index] == 0)
+
+    //如果数据块指针指向0，说明应该分配一个新的数据块
+    if (dir_node->block_point[block_point_index] == 0)
     {
         block_id = search_free_block();
-        dir_node->block_point[blk_index] = block_id;
+        dir_node->block_point[block_point_index] = block_id;
     }
+    //如果数据块指针有指向内容，则修改block_id为该数据块id
     else
     {
-        block_id = dir_node->block_point[blk_index];
+        block_id = dir_node->block_point[block_point_index];
     }
-    write_block(block_id, (char *)dir_item, 128, blk_off);
-    dir_node->size += 128;
+    //把内容写入数据块
+    write_block(block_id, (char *)dir_item, 128, block_offset);
+    //文件大小  //TODO 看看要不要改
+    dir_node->size = dir_node->size + 128;
     return 0;
 }
 
-dir_item *read_dir_item(struct inode *dir_node, int blk_index, int off_index)
+//根据文件夹inode读dir_item
+dir_item *read_dir_item(inode *dir_node, int block_point_index, int offset_index)
 {
-    if (off_index >= 8)
-    {
-        printf("read_dir_item() cannot read num greater than 8 \n");
-        return 0;
-    }
-    char *buf = read_block(dir_node->block_point[blk_index]);
-    return (struct dir_item *)(buf + off_index * 128);
+    char *read_dir_item_buf = read_block(dir_node->block_point[block_point_index]);
+    return (dir_item *)(read_dir_item_buf + offset_index * 128);
 }
 
 /**
@@ -261,12 +259,9 @@ dir_item *read_dir_item(struct inode *dir_node, int blk_index, int off_index)
  * 在制定inode下寻找dir_item，仅需名字即可
  * 
  * footprint：代表需不需要输出查找过程
- * 
- * 
- * 
- * 目前暂时不允许文件夹与文件重名
  */
-dir_item *search_dir_item_by_inode(struct inode *dir_inode, char *dir_name, int *blk_index, int *blk_off, int footprint)
+//根据dir_name在inode下查找dir_item
+dir_item *search_dir_item_in_inode_by_name(inode *dir_inode, char *dir_name, int *blk_index, int *blk_off, int footprint)
 {
     int total_dir_item = dir_inode->size / 128;
     *blk_off = 0;
@@ -279,10 +274,10 @@ dir_item *search_dir_item_by_inode(struct inode *dir_inode, char *dir_name, int 
             int is_last = total_dir_item < 0 ? 1 : 0;
             for (int j = 0; j < dir_item_per_blk; j++)
             {
-                struct dir_item *dir_item = read_dir_item(dir_inode, i, j);
+                dir_item *dir_item = read_dir_item(dir_inode, i, j);
                 if (dir_item->valid && footprint)
                 {
-                    printf("%s %s\n", dir_item->name, dir_item->type == TYPE_FILE ? "\e[35;1mFILE\e[0m" : "\e[36;1mDIR\e[0m");
+                    printf("%s %s\n", dir_item->type == TYPE_FILE ? "FILE" : "DIR",dir_item->name);
                 }
                 if (strcmp(dir_item->name, dir_name) == 0)
                 {
@@ -333,15 +328,6 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
         }
         return 0;
     }
-    //if (path[0] == '.' && path[1] == '.')
-    //{
-    /* ../awdawdawd/awdaw */
-    //get_last_dir_item()
-    //*current_dir_item = top(1);
-    //peek_path(&path);
-    //if (is_follow && (memcmp(top(0)->name, "/", sizeof("/")) != 0))
-    //pop();
-    //}
     else if (path[0] == '/')
     {
         /* /dawdawd/awdaw */
@@ -352,14 +338,6 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
             push(root_dir_item);
         }
     }
-    /* ./adad/adad */
-    //else if (path[0] == '.')
-    //{
-    //peek_path(&path);
-    //get_current_dir_item
-    //*current_dir_item = top(0);
-    //}
-    /* asdad/adad */
     else
     {
         //get_current_dir_item
@@ -382,7 +360,7 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
             return -1;
         }
         struct dir_item *next_dir_item =
-            search_dir_item_by_inode(current_dir_node, *dir_name, &blk_index, &block_off, 0);
+            search_dir_item_in_inode_by_name(current_dir_node, *dir_name, &blk_index, &block_off, 0);
         if (!next_dir_item)
         {
             printf("find_inode() directory %s is not exist!\n", *dir_name);
@@ -426,42 +404,49 @@ void ls_cmd(char *path)
     int block_index = 0;
     int block_offset = 0;
     //根据inode查找相应的dir_item
-    search_dir_item_by_inode(cur_inode, "/", &block_index, &block_offset, 1);
+    search_dir_item_in_inode_by_name(cur_inode, "/", &block_index, &block_offset, 1);
 }
 
 //创建文件
 //输入 *path 路径
 inode *touch_cmd(char *path)
 {
-    struct dir_item *cur_dir_item;
-    struct dir_item *up_dir_item;
-    struct inode *cur_inode;
-    struct inode *down_inode;
+    //当前目录的dir_item
+    dir_item *cur_dir_item;
+    //上级目录的dir_item
+    dir_item *up_dir_item;
+    //当前目录的inode
+    inode *cur_inode;
+    //下级目录的inode
+    inode *down_inode;
+    //目录名
     char *dir_name;
+    //从路径中判断出文件名
     char *file_name = get_file_name(path);
-    printf("path %s \n", path);
+
+    //根据目录找到dir_item,如果没有找到则需要进行创建，如果找到了直接结束，并给出用户反馈
     if (search_dir_item_by_path(path, &dir_name, &cur_dir_item, &up_dir_item, 0) < 0)
     {
         if (memcmp(dir_name, file_name, strlen(file_name)) != 0)
         {
-            printf("mkdir_cmd() directory %s is not exist!\n", dir_name);
-            return (struct inode *)0;
+            printf("ERROR INFO: dir_name %s error!\n", dir_name);
+            return 0;
         }
-
-        printf("mkdir_cmd() not find path: %s\n", path);
-        printf("mkdir_cmd() now we'll create one for you !\n");
         /* 创建不存在的目录 */
-        struct inode *down_inode = init_inode(TYPE_FILE);
+        inode *down_inode = init_inode(TYPE_FILE);
         uint32_t inode_index = write_inode(down_inode);
-        struct dir_item *dir_item = init_dir_item(TYPE_FILE, inode_index, dir_name);
+        dir_item *dir_item = init_dir_item(TYPE_FILE, inode_index, dir_name);
         /* 刷新当前节点 */
         cur_inode = read_inode(cur_dir_item->inode_id);
-        create_dir_item(cur_inode, dir_item);
+        write_dir_item(cur_inode, dir_item);
         sync_inode(cur_dir_item->inode_id, cur_inode);
 
         return down_inode;
     }
-    printf("touch_cmd() file %s is already exists !\n", file_name);
+    else
+    {
+        printf("ERROR INFO:The file has existed.!\n");
+    }
 }
 
 inode *mkdir_cmd(char *path)
@@ -523,7 +508,7 @@ inode *mkdir_cmd(char *path)
              *                                                             -> dir ..
              */
             current_inode = read_inode(current_dir_item->inode_id);
-            create_dir_item(current_inode, dir_item);
+            write_dir_item(current_inode, dir_item);
             sync_inode(current_dir_item->inode_id, current_inode);
 
             down_inode = mkdir_cmd(path);
