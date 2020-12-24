@@ -1,7 +1,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include "file_system.h"
+#include "init_fs.h"
 
 void shutdown_cmd();
 void ls_cmd(char *path);

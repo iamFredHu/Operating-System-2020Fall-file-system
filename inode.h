@@ -1,7 +1,7 @@
 #ifndef INODE_H
 #define INODE_H
 
-#include "file_system.h"
+#include "init_fs.h"
 
 inode *init_inode(uint16_t file_type);
 inode *read_inode(uint32_t inode_id);

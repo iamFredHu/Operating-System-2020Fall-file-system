@@ -7,7 +7,7 @@
 #include "command.h"
 #include "disk.h"
 #include "inode.h"
-#include "file_system.h"
+#include "init_fs.h"
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
@@ -159,27 +159,26 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
         {
             break;
         }
-        printf("search_dir_item_by_path() path %s, dirname %s , len %ld\n", path, *dir_name, strlen(*dir_name));
         int blk_index = 0;
         int block_off = 0;
         struct inode *current_dir_node = read_inode((*current_dir_item)->inode_id);
         if (current_dir_node->file_type == TYPE_FILE)
         {
-            printf("find_inode() error: %s is not directory \n", (*current_dir_item)->name);
+            printf("ERROR INFO: %s is not a dir!\n", (*current_dir_item)->name);
             return -1;
         }
         struct dir_item *next_dir_item =
             search_dir_item_in_inode_by_name(current_dir_node, *dir_name, &blk_index, &block_off, 0);
         if (!next_dir_item)
         {
-            printf("find_inode() directory %s is not exist!\n", *dir_name);
+            printf("ERROR INFO: The dir does not exist!\n", *dir_name);
             return -1;
         }
         *up_dir_item = *current_dir_item;
         *current_dir_item = next_dir_item;
         if (next_dir_item->type == TYPE_FILE)
         {
-            printf("find_inode() %s is a file , stop here!\n", *dir_name);
+            //printf("find_inode() %s is a file , stop here!\n", *dir_name);
             return 0;
         }
         if (is_follow)

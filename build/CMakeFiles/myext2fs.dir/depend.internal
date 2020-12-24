@@ -7,7 +7,7 @@ CMakeFiles/myext2fs.dir/block.c.o
  /home/180110505/Operating-System-2020Fall-file-system/command.h
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.h
  /home/180110505/Operating-System-2020Fall-file-system/utils.h
@@ -17,7 +17,7 @@ CMakeFiles/myext2fs.dir/command.c.o
  /home/180110505/Operating-System-2020Fall-file-system/command.h
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.h
  /home/180110505/Operating-System-2020Fall-file-system/utils.h
@@ -27,20 +27,20 @@ CMakeFiles/myext2fs.dir/dir_item.c.o
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.c
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.h
  /home/180110505/Operating-System-2020Fall-file-system/utils.h
 CMakeFiles/myext2fs.dir/disk.c.o
  /home/180110505/Operating-System-2020Fall-file-system/disk.c
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
-CMakeFiles/myext2fs.dir/file_system.c.o
+CMakeFiles/myext2fs.dir/init_fs.c.o
  /home/180110505/Operating-System-2020Fall-file-system/block.h
  /home/180110505/Operating-System-2020Fall-file-system/command.h
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.c
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.c
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.h
  /home/180110505/Operating-System-2020Fall-file-system/utils.h
@@ -49,7 +49,7 @@ CMakeFiles/myext2fs.dir/inode.c.o
  /home/180110505/Operating-System-2020Fall-file-system/command.h
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.c
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.h
@@ -59,7 +59,7 @@ CMakeFiles/myext2fs.dir/path.c.o
  /home/180110505/Operating-System-2020Fall-file-system/command.h
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.c
  /home/180110505/Operating-System-2020Fall-file-system/path.h
@@ -69,7 +69,7 @@ CMakeFiles/myext2fs.dir/shell.c.o
  /home/180110505/Operating-System-2020Fall-file-system/command.h
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.h
  /home/180110505/Operating-System-2020Fall-file-system/shell.c
@@ -79,7 +79,7 @@ CMakeFiles/myext2fs.dir/utils.c.o
  /home/180110505/Operating-System-2020Fall-file-system/command.h
  /home/180110505/Operating-System-2020Fall-file-system/dir_item.h
  /home/180110505/Operating-System-2020Fall-file-system/disk.h
- /home/180110505/Operating-System-2020Fall-file-system/file_system.h
+ /home/180110505/Operating-System-2020Fall-file-system/init_fs.h
  /home/180110505/Operating-System-2020Fall-file-system/inode.h
  /home/180110505/Operating-System-2020Fall-file-system/path.h
  /home/180110505/Operating-System-2020Fall-file-system/utils.c

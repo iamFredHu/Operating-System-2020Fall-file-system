@@ -70,17 +70,17 @@ CMakeFiles/myext2fs.dir/shell.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/myext2fs.dir/shell.c.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
-CMakeFiles/myext2fs.dir/file_system.c.o: CMakeFiles/myext2fs.dir/flags.make
-CMakeFiles/myext2fs.dir/file_system.c.o: ../file_system.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/myext2fs.dir/file_system.c.o"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/file_system.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/file_system.c
+CMakeFiles/myext2fs.dir/init_fs.c.o: CMakeFiles/myext2fs.dir/flags.make
+CMakeFiles/myext2fs.dir/init_fs.c.o: ../init_fs.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/myext2fs.dir/init_fs.c.o"
+	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/myext2fs.dir/init_fs.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/init_fs.c
 
-CMakeFiles/myext2fs.dir/file_system.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/myext2fs.dir/file_system.c.i"
+CMakeFiles/myext2fs.dir/init_fs.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/myext2fs.dir/init_fs.c.i"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
-CMakeFiles/myext2fs.dir/file_system.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/myext2fs.dir/file_system.c.s"
+CMakeFiles/myext2fs.dir/init_fs.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/myext2fs.dir/init_fs.c.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/myext2fs.dir/inode.c.o: CMakeFiles/myext2fs.dir/flags.make
@@ -177,7 +177,7 @@ CMakeFiles/myext2fs.dir/path.c.s: cmake_force
 # Object files for target myext2fs
 myext2fs_OBJECTS = \
 "CMakeFiles/myext2fs.dir/shell.c.o" \
-"CMakeFiles/myext2fs.dir/file_system.c.o" \
+"CMakeFiles/myext2fs.dir/init_fs.c.o" \
 "CMakeFiles/myext2fs.dir/inode.c.o" \
 "CMakeFiles/myext2fs.dir/utils.c.o" \
 "CMakeFiles/myext2fs.dir/disk.c.o" \
@@ -190,7 +190,7 @@ myext2fs_OBJECTS = \
 myext2fs_EXTERNAL_OBJECTS =
 
 myext2fs: CMakeFiles/myext2fs.dir/shell.c.o
-myext2fs: CMakeFiles/myext2fs.dir/file_system.c.o
+myext2fs: CMakeFiles/myext2fs.dir/init_fs.c.o
 myext2fs: CMakeFiles/myext2fs.dir/inode.c.o
 myext2fs: CMakeFiles/myext2fs.dir/utils.c.o
 myext2fs: CMakeFiles/myext2fs.dir/disk.c.o

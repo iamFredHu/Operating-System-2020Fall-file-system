@@ -1,7 +1,7 @@
 #ifndef DIR_ITEM_H
 #define DIR_ITEM_H
 
-#include "file_system.h"
+#include "init_fs.h"
 
 dir_item *init_dir_item(uint8_t type, uint32_t inode_id, char *name);
 int write_dir_item(struct inode *dir_node, struct dir_item *dir_item);

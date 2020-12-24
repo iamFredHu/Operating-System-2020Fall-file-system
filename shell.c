@@ -6,7 +6,7 @@
 #include "command.h"
 #include "disk.h"
 #include "inode.h"
-#include "file_system.h"
+#include "init_fs.h"
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
@@ -140,7 +140,7 @@ int main(void)
         //注意如果没有输入内容，应该要求用户再次进行输入
         while (input_command_len == 0)
         {
-            printf("Please input your command!\n");
+            printf("ERROR INFO: Please input your command!\n");
             printf("==>");
             input_command_len = gets(command, 512);
         }

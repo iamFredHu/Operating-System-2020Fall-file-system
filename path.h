@@ -1,7 +1,7 @@
 #ifndef PATH_H
 #define PATH_H
 
-#include "file_system.h"
+#include "init_fs.h"
 /* 路径栈 */
 typedef struct path_stack_t
 {

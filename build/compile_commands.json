@@ -6,8 +6,8 @@
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8     -o CMakeFiles/myext2fs.dir/file_system.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/file_system.c",
-  "file": "/home/180110505/Operating-System-2020Fall-file-system/file_system.c"
+  "command": "/bin/gcc-8     -o CMakeFiles/myext2fs.dir/init_fs.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/init_fs.c",
+  "file": "/home/180110505/Operating-System-2020Fall-file-system/init_fs.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",

@@ -6,7 +6,7 @@
 #include "command.h"
 #include "disk.h"
 #include "inode.h"
-#include "file_system.h"
+#include "init_fs.h"
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
@@ -78,7 +78,7 @@ inode *touch_cmd(char *path)
     }
     else
     {
-        printf("ERROR INFO:The file has existed.!\n");
+        printf("ERROR INFO: The file has existed.!\n");
     }
 }
 
@@ -91,7 +91,7 @@ inode *mkdir_cmd(char *path)
         struct inode *dir_node = init_inode(TYPE_DIR);
         if (root_dir_node)
         {
-            printf("mkdir_cmd() can not create another root directory! \n");
+            printf("ERROR:  The root dir has existed.!\n");
             return (struct inode *)0;
         }
         write_inode(dir_node);
@@ -116,12 +116,8 @@ inode *mkdir_cmd(char *path)
         struct inode *current_inode;
         struct inode *down_inode;
         char *dir_name;
-        printf("path %s \n", path);
         if (search_dir_item_by_path(path, &dir_name, &current_dir_item, &up_dir_item, 0) < 0)
         {
-            printf("mkdir_cmd() not find path: %s\n", path);
-            printf("mkdir_cmd() now we'll create one for you !\n");
-
             /**
              *  
              * 创建不存在的目录
@@ -166,23 +162,21 @@ int cp_cmd(char *from_path, char *to_path)
     char *from_dir_name;
     char *to_dir_name;
 
-    printf("from_path %s , to_path %s\n", from_path, to_path);
-
     if (search_dir_item_by_path(from_path, &from_dir_name, &from_current_dir_item, &from_last_dir_item, 0) < 0)
     {
-        printf("cp_cmd() source file not exist!\n");
+        printf("ERROR INFO: The file %s does not exist!\n",from_path);
         return -1;
     }
     if (search_dir_item_by_path(to_path, &to_dir_name, &to_current_dir_item, &to_last_dir_item, 0) == 0)
     {
-        printf("cp_cmd() dest file exists!\n");
+        printf("ERROR INFO: The file %s does not exist!\n",to_path);
         return -1;
     }
     from_current_inode = read_inode(from_current_dir_item->inode_id);
     to_current_inode = touch_cmd(to_path);
     if (!to_current_inode)
     {
-        printf("cp_cmd() dest directory not exists!\n");
+        printf("ERROR INFO: The destination does not exists!\n");
         return -1;
     }
     search_dir_item_by_path(to_path, &to_dir_name, &to_current_dir_item, &to_last_dir_item, 0);

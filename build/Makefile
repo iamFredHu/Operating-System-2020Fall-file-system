@@ -628,32 +628,32 @@ disk.c.s:
 	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/disk.c.s
 .PHONY : disk.c.s
 
-file_system.o: file_system.c.o
+init_fs.o: init_fs.c.o
 
-.PHONY : file_system.o
+.PHONY : init_fs.o
 
 # target to build an object file
-file_system.c.o:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/file_system.c.o
-.PHONY : file_system.c.o
+init_fs.c.o:
+	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/init_fs.c.o
+.PHONY : init_fs.c.o
 
-file_system.i: file_system.c.i
+init_fs.i: init_fs.c.i
 
-.PHONY : file_system.i
+.PHONY : init_fs.i
 
 # target to preprocess a source file
-file_system.c.i:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/file_system.c.i
-.PHONY : file_system.c.i
+init_fs.c.i:
+	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/init_fs.c.i
+.PHONY : init_fs.c.i
 
-file_system.s: file_system.c.s
+init_fs.s: init_fs.c.s
 
-.PHONY : file_system.s
+.PHONY : init_fs.s
 
 # target to generate assembly for a file
-file_system.c.s:
-	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/file_system.c.s
-.PHONY : file_system.c.s
+init_fs.c.s:
+	$(MAKE) -f CMakeFiles/myext2fs.dir/build.make CMakeFiles/myext2fs.dir/init_fs.c.s
+.PHONY : init_fs.c.s
 
 inode.o: inode.c.o
 
@@ -815,9 +815,9 @@ help:
 	@echo "... disk.o"
 	@echo "... disk.i"
 	@echo "... disk.s"
-	@echo "... file_system.o"
-	@echo "... file_system.i"
-	@echo "... file_system.s"
+	@echo "... init_fs.o"
+	@echo "... init_fs.i"
+	@echo "... init_fs.s"
 	@echo "... inode.o"
 	@echo "... inode.i"
 	@echo "... inode.s"

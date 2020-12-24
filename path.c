@@ -7,7 +7,7 @@
 #include "command.h"
 #include "disk.h"
 #include "inode.h"
-#include "file_system.h"
+#include "init_fs.h"
 #include "utils.h"
 #include "dir_item.h"
 #include "block.h"
@@ -39,7 +39,7 @@ int push(struct dir_item *dir_item)
     path_stack.top++;
     if (path_stack.top > 19)
     {
-        printf("push path() path_stack is too long");
+        //printf("push path() path_stack is too long");
         return -1;
     }
     path_stack.stack[path_stack.top].inode_id = dir_item->inode_id;
