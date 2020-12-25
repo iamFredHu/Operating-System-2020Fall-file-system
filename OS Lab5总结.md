@@ -72,7 +72,8 @@ sb->block_map[block_id / 32] = sb->block_map[block_id / 32] | (1 << block_id % 3
 
 有一个下级和上一级目录
 
-a连接着b b连接着c c连接着d d后面没有连接着的东西，（后面没有/，用函数判断，说明是最后一个）
+a连接着b b连接着c c连接着d d后面没有连接着的东西
+上一级的inode存着下一级目录的数据块地址
 
 ## init_fs.c
 
@@ -86,7 +87,7 @@ open_disk()，载入数据
 
 标记数据块占用情况，即为sp_block和inode分配数据块0,1-32
 
-//初始化完毕或已有数据，社会根目录inode和dir_item
+//初始化完毕或已有数据，设置根目录inode和dir_item
 
 然后进入根目录
 

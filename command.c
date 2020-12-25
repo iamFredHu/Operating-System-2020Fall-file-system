@@ -64,11 +64,11 @@ inode *touch_cmd(char *path)
             printf("ERROR INFO: dir_name %s error!\n", dir_name);
             return 0;
         }
-        /* 创建不存在的目录 */
+        //创建不存在的文件
         inode *down_inode = init_inode(TYPE_FILE);
         uint32_t inode_index = write_inode(down_inode);
         dir_item *dir_item = init_dir_item(TYPE_FILE, inode_index, dir_name);
-        /* 刷新当前节点 */
+        //刷新
         cur_inode = read_inode(cur_dir_item->inode_id);
         write_dir_item(cur_inode, dir_item);
         update_inode(cur_dir_item->inode_id, cur_inode);
@@ -84,7 +84,7 @@ inode *touch_cmd(char *path)
 inode *mkdir_cmd(char *path)
 {
     sb->dir_inode_count++;
-    /* 根目录 */
+    //根目录
     if (strcmp(path, "/") == 0)
     {
         inode *dir_node = init_inode(TYPE_DIR);
@@ -98,7 +98,7 @@ inode *mkdir_cmd(char *path)
         disk_write_block(1, (char *)sb + DEVICE_BLOCK_SIZE);
         return dir_node;
     }
-    /* 非根目录 */
+    //非根目录
     else
     {
         dir_item *current_dir_item;
@@ -130,25 +130,25 @@ inode *mkdir_cmd(char *path)
 int cp_cmd(char *from_path, char *to_path)
 {
 
-    struct dir_item *from_current_dir_item;
-    struct dir_item *from_last_dir_item;
-    struct inode *from_current_inode;
+    dir_item *from_current_dir_item;
+    dir_item *from_last_dir_item;
+    inode *from_current_inode;
 
-    struct dir_item *to_current_dir_item;
-    struct dir_item *to_last_dir_item;
-    struct inode *to_current_inode;
+    dir_item *to_current_dir_item;
+    dir_item *to_last_dir_item;
+    inode *to_current_inode;
 
     char *from_dir_name;
     char *to_dir_name;
 
     if (search_dir_item_by_path(from_path, &from_dir_name, &from_current_dir_item, &from_last_dir_item) < 0)
     {
-        printf("ERROR INFO: The file %s does not exist!\n", from_path);
+        printf("ERROR INFO: The src path %s does not exist!\n", from_path);
         return -1;
     }
     if (search_dir_item_by_path(to_path, &to_dir_name, &to_current_dir_item, &to_last_dir_item) == 0)
     {
-        printf("ERROR INFO: The file %s does not exist!\n", to_path);
+        printf("ERROR INFO: The des path %s does not exist!\n", to_path);
         return -1;
     }
     from_current_inode = read_inode(from_current_dir_item->inode_id);
