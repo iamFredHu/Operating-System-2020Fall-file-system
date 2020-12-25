@@ -21,7 +21,7 @@ int init_file_system()
     }
     else
     {
-        printf("ERROR INFO: The disk has been successfully opened!\n");
+        printf("INFO: The disk has been successfully opened!\n");
     }
 
     char *init_filesystem_buf;
@@ -87,7 +87,7 @@ int init_file_system()
     root_dir_item = init_dir_item(TYPE_DIR, 0, "/");
     //目录栈初始化
     path_stack.number = -1;
-    push(root_dir_item);
+    path_push(root_dir_item);
     //初始时应该进入根目录
     ls_cmd("/");
     return 0;

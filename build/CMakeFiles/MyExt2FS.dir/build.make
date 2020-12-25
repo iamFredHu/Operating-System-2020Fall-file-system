@@ -64,11 +64,11 @@ CMakeFiles/MyExt2FS.dir/shell.c.o: ../shell.c
 
 CMakeFiles/MyExt2FS.dir/shell.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/shell.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/shell.c > CMakeFiles/MyExt2FS.dir/shell.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/shell.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/shell.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/shell.c -o CMakeFiles/MyExt2FS.dir/shell.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/MyExt2FS.dir/init_fs.c.o: CMakeFiles/MyExt2FS.dir/flags.make
 CMakeFiles/MyExt2FS.dir/init_fs.c.o: ../init_fs.c
@@ -77,11 +77,11 @@ CMakeFiles/MyExt2FS.dir/init_fs.c.o: ../init_fs.c
 
 CMakeFiles/MyExt2FS.dir/init_fs.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/init_fs.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/init_fs.c > CMakeFiles/MyExt2FS.dir/init_fs.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/init_fs.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/init_fs.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/init_fs.c -o CMakeFiles/MyExt2FS.dir/init_fs.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/MyExt2FS.dir/inode.c.o: CMakeFiles/MyExt2FS.dir/flags.make
 CMakeFiles/MyExt2FS.dir/inode.c.o: ../inode.c
@@ -90,11 +90,11 @@ CMakeFiles/MyExt2FS.dir/inode.c.o: ../inode.c
 
 CMakeFiles/MyExt2FS.dir/inode.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/inode.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/inode.c > CMakeFiles/MyExt2FS.dir/inode.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/inode.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/inode.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/inode.c -o CMakeFiles/MyExt2FS.dir/inode.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/MyExt2FS.dir/disk.c.o: CMakeFiles/MyExt2FS.dir/flags.make
 CMakeFiles/MyExt2FS.dir/disk.c.o: ../disk.c
@@ -103,11 +103,11 @@ CMakeFiles/MyExt2FS.dir/disk.c.o: ../disk.c
 
 CMakeFiles/MyExt2FS.dir/disk.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/disk.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/disk.c > CMakeFiles/MyExt2FS.dir/disk.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/disk.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/disk.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/disk.c -o CMakeFiles/MyExt2FS.dir/disk.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/MyExt2FS.dir/command.c.o: CMakeFiles/MyExt2FS.dir/flags.make
 CMakeFiles/MyExt2FS.dir/command.c.o: ../command.c
@@ -116,11 +116,11 @@ CMakeFiles/MyExt2FS.dir/command.c.o: ../command.c
 
 CMakeFiles/MyExt2FS.dir/command.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/command.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/command.c > CMakeFiles/MyExt2FS.dir/command.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/command.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/command.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/command.c -o CMakeFiles/MyExt2FS.dir/command.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/MyExt2FS.dir/dir_item.c.o: CMakeFiles/MyExt2FS.dir/flags.make
 CMakeFiles/MyExt2FS.dir/dir_item.c.o: ../dir_item.c
@@ -129,11 +129,11 @@ CMakeFiles/MyExt2FS.dir/dir_item.c.o: ../dir_item.c
 
 CMakeFiles/MyExt2FS.dir/dir_item.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/dir_item.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/dir_item.c > CMakeFiles/MyExt2FS.dir/dir_item.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/dir_item.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/dir_item.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/dir_item.c -o CMakeFiles/MyExt2FS.dir/dir_item.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/MyExt2FS.dir/block.c.o: CMakeFiles/MyExt2FS.dir/flags.make
 CMakeFiles/MyExt2FS.dir/block.c.o: ../block.c
@@ -142,11 +142,11 @@ CMakeFiles/MyExt2FS.dir/block.c.o: ../block.c
 
 CMakeFiles/MyExt2FS.dir/block.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/block.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/block.c > CMakeFiles/MyExt2FS.dir/block.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/block.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/block.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/block.c -o CMakeFiles/MyExt2FS.dir/block.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/MyExt2FS.dir/path.c.o: CMakeFiles/MyExt2FS.dir/flags.make
 CMakeFiles/MyExt2FS.dir/path.c.o: ../path.c
@@ -155,11 +155,11 @@ CMakeFiles/MyExt2FS.dir/path.c.o: ../path.c
 
 CMakeFiles/MyExt2FS.dir/path.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/MyExt2FS.dir/path.c.i"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/180110505/Operating-System-2020Fall-file-system/path.c > CMakeFiles/MyExt2FS.dir/path.c.i
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_PREPROCESSED_SOURCE
 
 CMakeFiles/MyExt2FS.dir/path.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/MyExt2FS.dir/path.c.s"
-	/bin/gcc-8 $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/180110505/Operating-System-2020Fall-file-system/path.c -o CMakeFiles/MyExt2FS.dir/path.c.s
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_C_CREATE_ASSEMBLY_SOURCE
 
 # Object files for target MyExt2FS
 MyExt2FS_OBJECTS = \

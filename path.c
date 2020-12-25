@@ -12,31 +12,32 @@
 #include "block.h"
 #include "path.h"
 
-dir_item *top(int n)
+dir_item *path_top(int n)
 {
     if (path_stack.number == -1 ? 1 : 0)
     {
         return 0;
     }
 
-    return path_stack.number - n >= 0 ? &path_stack.path_t[path_stack.number - n] : &path_stack.path_t[0];
+    return path_stack.number - n >= 0 ? &path_stack.path_s_dir_item[path_stack.number - n] : &path_stack.path_s_dir_item[0];
 }
 
 //入栈
-int push(dir_item *dir_item)
+int path_push(dir_item *dir_item)
 {
     path_stack.number++;
     if (path_stack.number > 19)
     {
         return -1;
     }
-    path_stack.path_t[path_stack.number].inode_id = dir_item->inode_id;
-    memmove(path_stack.path_t[path_stack.number].name, dir_item->name, 121);
-    path_stack.path_t[path_stack.number].type = dir_item->type;
-    path_stack.path_t[path_stack.number].valid = dir_item->valid;
+    path_stack.path_s_dir_item[path_stack.number].inode_id = dir_item->inode_id;
+    memmove(path_stack.path_s_dir_item[path_stack.number].name, dir_item->name, 121);
+    path_stack.path_s_dir_item[path_stack.number].type = dir_item->type;
+    path_stack.path_s_dir_item[path_stack.number].valid = dir_item->valid;
     return 0;
 }
 
+//找到文件名
 char *get_file_name(char *path)
 {
     int path_len = strlen(path);

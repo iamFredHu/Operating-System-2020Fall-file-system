@@ -13,7 +13,6 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/180110505/Operating-System-2020Fall-file-system/path.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/MyExt2FS.dir/path.c.o"
   "/home/180110505/Operating-System-2020Fall-file-system/shell.c" "/home/180110505/Operating-System-2020Fall-file-system/build/CMakeFiles/MyExt2FS.dir/shell.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH

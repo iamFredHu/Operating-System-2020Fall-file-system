@@ -139,7 +139,7 @@ int search_dir_item_by_path(char *path, char **dir_name, struct dir_item **curre
     else
     {
         //get_current_dir_item
-        *current_dir_item = top(0);
+        *current_dir_item = path_top(0);
     }
 
     while ((*dir_name = watch_path(&path)) != NULL)

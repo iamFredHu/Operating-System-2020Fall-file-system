@@ -1,42 +1,42 @@
 [
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/shell.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/shell.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/shell.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/shell.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/shell.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/init_fs.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/init_fs.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/init_fs.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/init_fs.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/init_fs.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/inode.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/inode.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/inode.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/inode.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/inode.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/disk.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/disk.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/disk.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/disk.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/disk.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/command.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/command.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/command.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/command.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/command.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/dir_item.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/dir_item.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/dir_item.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/dir_item.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/dir_item.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/block.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/block.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/block.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/block.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/block.c"
 },
 {
   "directory": "/home/180110505/Operating-System-2020Fall-file-system/build",
-  "command": "/bin/gcc-8   -O3 -DNDEBUG   -o CMakeFiles/MyExt2FS.dir/path.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/path.c",
+  "command": "/bin/gcc-8     -o CMakeFiles/MyExt2FS.dir/path.c.o   -c /home/180110505/Operating-System-2020Fall-file-system/path.c",
   "file": "/home/180110505/Operating-System-2020Fall-file-system/path.c"
 }
 ]
